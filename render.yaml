@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: smart-buy-hub
+    runtime: node
+    repo: https://github.com/potturutarun-arch/Smart-Buy-Hub
+    branch: main
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: PORT
+        value: 10000
