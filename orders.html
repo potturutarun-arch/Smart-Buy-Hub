@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - SmartBuyHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e6c46;
+            --primary-light: #469b61;
+            --primary-gradient: linear-gradient(135deg, #1e6c46 0%, #469b61 100%);
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --pending: #f59e0b;
+            --confirmed: #10b981;
+            --declined: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Navbar */
+        .navbar { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; }
+        .nav-right a { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+
+        /* Header Gradient Banner */
+        .header-banner {
+            background: var(--primary-gradient);
+            padding: 1.5rem 2rem 5rem 2rem;
+            color: white;
+        }
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .breadcrumbs {
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+        .breadcrumbs span {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Dashboard Container */
+        .main-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: -4rem auto 4rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Widgets Grid */
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .widget-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            border: 1px solid var(--border-color);
+        }
+        .widget-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.25rem;
+        }
+        .widget-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .widget-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .widget-value {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-top: 0.15rem;
+        }
+
+        .icon-blue { background: #eff6ff; color: #3b82f6; }
+        .icon-green { background: #ecfdf5; color: var(--confirmed); }
+        .icon-yellow { background: #fffbeb; color: var(--pending); }
+
+        /* Main Card */
+        .orders-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        /* Filter Tabs */
+        .tabs {
+            display: flex;
+            background: #f3f4f6;
+            padding: 0.25rem;
+            border-radius: 8px;
+            gap: 0.25rem;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Search input */
+        .search-wrapper {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .search-wrapper input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+        }
+        .search-wrapper input:focus {
+            border-color: var(--primary-light);
+        }
+        .search-wrapper i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* Orders Table */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th {
+            padding: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            vertical-align: middle;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .store-badge {
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        .store-amazon { background: #ff990022; color: #ff9900; }
+        .store-flipkart { background: #2874f022; color: #2874f0; }
+        .store-myntra { background: #ff3f6c22; color: #ff3f6c; }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+        }
+        .status-badge.confirmed { background: #d1fae5; color: #065f46; }
+        .status-badge.pending { background: #fef3c7; color: #92400e; }
+        .status-badge.declined { background: #fee2e2; color: #991b1b; }
+        
+        .no-data {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+        .no-data i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #d1d5db;
+        }
+
+        /* Dark Premium Footer */
+        .footer-wrap {
+            background: #222222;
+            color: #9ca3af;
+            padding: 3rem 2rem 2rem 2rem;
+            margin-top: auto;
+            border-top: 4px solid var(--primary);
+        }
+        .footer-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
+        }
+        .footer-col h4 {
+            color: #4ade80;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.75rem; }
+        .footer-col ul li a { color: #9ca3af; text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: white; }
+        .playstore-btn {
+            background: #000000; border: 1px solid #374151; border-radius: 8px; padding: 0.5rem 1rem;
+            display: inline-flex; align-items: center; gap: 0.75rem; color: white; text-decoration: none; width: fit-content;
+        }
+        .playstore-btn i { font-size: 1.75rem; color: #3b82f6; }
+        .btn-text { display: flex; flex-direction: column; line-height: 1.2; }
+        .text-top { font-size: 0.65rem; text-transform: uppercase; color: #9ca3af; }
+        .text-bottom { font-size: 0.95rem; font-weight: 700; }
+        .footer-bottom {
+            max-width: 1000px; margin: 2.5rem auto 0 auto; padding-top: 1.5rem; border-top: 1px solid #374151;
+            text-align: center; font-size: 0.8rem; color: #6b7280;
+        }
+
+        /* Mobile Layout */
+        @media (max-width: 768px) {
+            .widgets-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .tabs {
+                width: 100%;
+                justify-content: space-around;
+            }
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 480px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-bag-shopping"></i> SmartBuyHub
+        </a>
+        <div class="nav-right">
+            <a href="profile.html"><i class="fa-solid fa-user"></i> <span id="navProfileName">My Profile</span></a>
+        </div>
+    </nav>
+
+    <!-- Header Gradient Banner -->
+    <div class="header-banner">
+        <div class="header-content">
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <a href="earnings.html">My Earnings</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <span>Order Details</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div class="main-container">
+        <!-- Summary widgets -->
+        <div class="widgets-grid">
+            <div class="widget-card">
+                <div class="widget-icon icon-blue">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+                <div class="widget-details">
+                    <span class="widget-label">Total Orders</span>
+                    <span class="widget-value" id="statTotal">0</span>
+                </div>
+            </div>
+            <div class="widget-card">
+                <div class="widget-icon icon-green">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="widget-details">
+                    <span class="widget-label">Confirmed Profit</span>
+                    <span class="widget-value">₹<span id="statConfirmed">0.00</span></span>
+                </div>
+            </div>
+            <div class="widget-card">
+                <div class="widget-icon icon-yellow">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+                <div class="widget-details">
+                    <span class="widget-label">Pending Profit</span>
+                    <span class="widget-value">₹<span id="statPending">0.00</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders list card -->
+        <div class="orders-card">
+            <div class="card-header">
+                <h3 class="card-title">My Orders Performance</h3>
+                <div class="tabs">
+                    <button class="tab-btn active" data-status="All">All</button>
+                    <button class="tab-btn" data-status="Pending">Pending</button>
+                    <button class="tab-btn" data-status="Confirmed">Confirmed</button>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="orderSearch" placeholder="Search by Order ID or retailer...">
+            </div>
+
+            <!-- Orders Table -->
+            <div class="table-responsive">
+                <table id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Retailer</th>
+                            <th>Order Date</th>
+                            <th>Order Amount</th>
+                            <th>Your Earnings</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersBody">
+                        <!-- Data injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="noDataContainer" class="no-data" style="display: none;">
+                <i class="fa-solid fa-circle-info"></i>
+                <h3>No Orders Found</h3>
+                <p>We couldn't find any affiliate transactions matching the active criteria.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-wrap">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>About SmartBuyHub</h4>
+                <ul>
+                    <li><a href="help.html#about">About Us</a></li>
+                    <li><a href="help.html#blog">Blog</a></li>
+                    <li><a href="help.html">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Useful Reads</h4>
+                <ul>
+                    <li><a href="help.html#terms">Terms and Conditions</a></li>
+                    <li><a href="help.html#privacy">Privacy & Cookie Policy</a></li>
+                    <li><a href="help.html#anti-spam">Anti-Spam Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect With Us</h4>
+                <ul>
+                    <li><a href="help.html">Get Help</a></li>
+                    <li><a href="https://t.me/smartbuyhub" target="_blank">Telegram</a></li>
+                    <li><a href="https://youtube.com/smartbuyhub" target="_blank">YouTube</a></li>
+                    <li><a href="https://instagram.com/smartbuyhub" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Download App</h4>
+                <a href="https://play.google.com/store" target="_blank" class="playstore-btn">
+                    <i class="fa-brands fa-google-play"></i>
+                    <div class="btn-text">
+                        <span class="text-top">Get it on</span>
+                        <span class="text-bottom">Google Play</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 SmartBuyHub. All rights reserved. Built with premium design.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+
+            if (!token || !userId) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            let allOrders = [];
+            let currentStatus = 'All';
+
+            const formatCurrency = (val) => {
+                return new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    maximumFractionDigits: 2
+                }).format(val);
+            };
+
+            // Fetch live profile details for navbar name
+            try {
+                const pRes = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                if (pRes.ok) {
+                    const userData = await pRes.json();
+                    document.getElementById('navProfileName').textContent = userData.name;
+                }
+            } catch(e) { console.error("Profile fetching failed", e); }
+
+            // Fetch user orders from API
+            const loadOrders = async () => {
+                try {
+                    const res = await fetch(`http://localhost:3000/api/user/orders?userId=${userId}`);
+                    if (res.ok) {
+                        allOrders = await res.json();
+                        updateWidgets();
+                        renderOrders();
+                    }
+                } catch(e) {
+                    console.error("Failed to load orders from API", e);
+                }
+            };
+
+            const updateWidgets = () => {
+                document.getElementById('statTotal').textContent = allOrders.length;
+                
+                const confirmed = allOrders
+                    .filter(o => o.status === 'Confirmed')
+                    .reduce((sum, o) => sum + o.profit, 0);
+                
+                const pending = allOrders
+                    .filter(o => o.status === 'Pending')
+                    .reduce((sum, o) => sum + o.profit, 0);
+
+                document.getElementById('statConfirmed').textContent = confirmed.toFixed(2);
+                document.getElementById('statPending').textContent = pending.toFixed(2);
+            };
+
+            const renderOrders = () => {
+                const tbody = document.getElementById('ordersBody');
+                const noData = document.getElementById('noDataContainer');
+                tbody.innerHTML = '';
+
+                const searchVal = document.getElementById('orderSearch').value.toLowerCase();
+
+                // Filter logic
+                const filtered = allOrders.filter(order => {
+                    const matchesStatus = currentStatus === 'All' || order.status === currentStatus;
+                    const matchesSearch = order.id.toLowerCase().includes(searchVal) || 
+                                          order.retailer.toLowerCase().includes(searchVal);
+                    return matchesStatus && matchesSearch;
+                });
+
+                if (filtered.length === 0) {
+                    noData.style.display = 'block';
+                    document.getElementById('ordersTable').style.display = 'none';
+                    return;
+                }
+
+                noData.style.display = 'none';
+                document.getElementById('ordersTable').style.display = 'table';
+
+                filtered.forEach(o => {
+                    const tr = document.createElement('tr');
+                    
+                    const storeClass = `store-${o.retailer.toLowerCase()}`;
+                    const statusClass = o.status.toLowerCase();
+                    const statusIcon = o.status === 'Confirmed' ? 'circle-check' : o.status === 'Pending' ? 'clock' : 'circle-xmark';
+
+                    tr.innerHTML = `
+                        <td style="font-weight: 600; color: var(--primary);">${o.id}</td>
+                        <td><span class="store-badge ${storeClass}">${o.retailer}</span></td>
+                        <td>${o.date}</td>
+                        <td>${formatCurrency(o.amount)}</td>
+                        <td style="font-weight: 700; color: var(--confirmed);">${formatCurrency(o.profit)}</td>
+                        <td>
+                            <span class="status-badge ${statusClass}">
+                                <i class="fa-solid fa-${statusIcon}"></i> ${o.status}
+                            </span>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            };
+
+            // Event Listeners for tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentStatus = e.target.getAttribute('data-status');
+                    renderOrders();
+                });
+            });
+
+            // Event Listener for search
+            document.getElementById('orderSearch').addEventListener('input', renderOrders);
+
+            // Initial trigger
+            await loadOrders();
+        });
+    </script>
+</body>
+</html>

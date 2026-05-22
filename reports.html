@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Reports - SmartBuyHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e6c46;
+            --primary-light: #469b61;
+            --primary-gradient: linear-gradient(135deg, #1e6c46 0%, #469b61 100%);
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            
+            /* Pastel Theme Accent Colors */
+            --pastel-pending-bg: #fff7ed;
+            --pastel-pending-text: #ea580c;
+            --pastel-confirmed-bg: #f0fdf4;
+            --pastel-confirmed-text: #16a34a;
+            --pastel-paid-bg: #eff6ff;
+            --pastel-paid-text: #2563eb;
+            --pastel-requested-bg: #faf5ff;
+            --pastel-requested-text: #7c3aed;
+            --pastel-cancelled-bg: #fef2f2;
+            --pastel-cancelled-text: #dc2626;
+
+            /* Flat Colored Performance Cards */
+            --flat-pink-bg: #fdf2f8;
+            --flat-pink-text: #db2777;
+            --flat-green-bg: #f0fdf4;
+            --flat-green-text: #16a34a;
+            --flat-blue-bg: #eff6ff;
+            --flat-blue-text: #2563eb;
+            --flat-purple-bg: #faf5ff;
+            --flat-purple-text: #7c3aed;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Navbar */
+        .navbar { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; }
+        .nav-right a { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; }
+
+        /* Header Gradient Banner */
+        .header-banner {
+            background: var(--primary-gradient);
+            padding: 1.5rem 2rem 5.5rem 2rem;
+            color: white;
+        }
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .breadcrumbs {
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+        .breadcrumbs span {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Container */
+        .main-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: -4.5rem auto 4rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Premium Dashboard Card */
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        /* All Time Total Profit Deck */
+        .all-time-profit-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        .info-tip { color: #9ca3af; cursor: help; font-size: 0.85rem; }
+        
+        .all-time-profit-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #111827;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        /* 5 Sub-metric Buckets Grid */
+        .profit-buckets-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.75rem;
+        }
+        .bucket-box {
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s;
+        }
+        .bucket-box:hover { transform: translateY(-2px); }
+        .bucket-box.pending { background-color: var(--pastel-pending-bg); color: var(--pastel-pending-text); }
+        .bucket-box.confirmed { background-color: var(--pastel-confirmed-bg); color: var(--pastel-confirmed-text); }
+        .bucket-box.paid { background-color: var(--pastel-paid-bg); color: var(--pastel-paid-text); }
+        .bucket-box.requested { background-color: var(--pastel-requested-bg); color: var(--pastel-requested-text); }
+        .bucket-box.cancelled { background-color: var(--pastel-cancelled-bg); color: var(--pastel-cancelled-text); }
+
+        .bucket-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.85;
+        }
+        .bucket-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        /* Performance Overview Header Group */
+        .performance-deck-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .performance-deck-title-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .rupee-badge {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: var(--pastel-confirmed-bg);
+            color: var(--pastel-confirmed-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 6px rgba(22, 163, 74, 0.08);
+        }
+        .performance-deck-text-group h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        .performance-deck-text-group p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        .filter-dropdown-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .filter-dropdown-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .filter-select {
+            padding: 0.4rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            background-color: white;
+            color: var(--text-dark);
+            outline: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* 4 Flat Pastel Performance Metric cards */
+        .performance-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .perf-card {
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .perf-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.02);
+        }
+        .perf-card.clicks { background-color: var(--flat-pink-bg); color: var(--flat-pink-text); }
+        .perf-card.txns { background-color: var(--flat-green-bg); color: var(--flat-green-text); }
+        .perf-card.profit { background-color: var(--flat-blue-bg); color: var(--flat-blue-text); }
+        .perf-card.conv { background-color: var(--flat-purple-bg); color: var(--flat-purple-text); }
+
+        .perf-label-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+        }
+        .perf-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        /* Retailer breakdown style */
+        .retailer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .retailer-row:last-child { border-bottom: none; }
+        .retailer-info { display: flex; align-items: center; gap: 0.75rem; }
+        .retailer-icon {
+            width: 36px; height: 36px; border-radius: 8px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1rem; font-weight: 700;
+        }
+        .brand-amazon { background: #ff990015; color: #ff9900; }
+        .brand-flipkart { background: #2874f015; color: #2874f0; }
+        .brand-myntra { background: #ec489915; color: #ec4899; }
+        .retailer-name { font-weight: 600; font-size: 0.95rem; }
+
+        .retailer-stats { display: flex; gap: 2rem; text-align: right; }
+        .stat-group { display: flex; flex-direction: column; }
+        .stat-num { font-size: 0.95rem; font-weight: 700; }
+        .stat-lbl { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* Links Performance list */
+        .link-perf-card {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fafbfe;
+        }
+        .link-details { flex: 1; padding-right: 2rem; }
+        .link-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; color: var(--text-dark); }
+        .link-url { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 450px; }
+        .link-metrics { display: flex; align-items: center; gap: 2rem; }
+
+        .btn-copy {
+            background: none; border: 1px solid var(--border-color); padding: 0.4rem 0.75rem; border-radius: 6px;
+            font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.35rem; transition: all 0.2s;
+        }
+        .btn-copy:hover { background: #f3f4f6; border-color: #cbd5e1; }
+
+        /* Toast notification */
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: #1e293b; color: white; padding: 0.75rem 1.5rem; border-radius: 50px;
+            font-size: 0.88rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 2000;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* Footer */
+        .footer-wrap {
+            background: #222222; color: #9ca3af; padding: 3rem 2rem 2rem 2rem; margin-top: auto; border-top: 4px solid var(--primary);
+        }
+        .footer-container {
+            max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem;
+        }
+        .footer-col h4 {
+            color: #4ade80; font-size: 0.95rem; font-weight: 600; margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.75rem; }
+        .footer-col ul li a { color: #9ca3af; text-decoration: none; font-size: 0.88rem; }
+        .footer-col ul li a:hover { color: white; }
+        .playstore-btn {
+            background: #000000; border: 1px solid #374151; border-radius: 8px; padding: 0.5rem 1rem;
+            display: inline-flex; align-items: center; gap: 0.75rem; color: white; text-decoration: none; width: fit-content;
+        }
+        .playstore-btn i { font-size: 1.75rem; color: #3b82f6; }
+        .btn-text { display: flex; flex-direction: column; line-height: 1.2; }
+        .text-top { font-size: 0.65rem; text-transform: uppercase; color: #9ca3af; }
+        .text-bottom { font-size: 0.95rem; font-weight: 700; }
+        .footer-bottom {
+            max-width: 1000px; margin: 2.5rem auto 0 auto; padding-top: 1.5rem; border-top: 1px solid #374151;
+            text-align: center; font-size: 0.8rem; color: #6b7280;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 840px) {
+            .profit-buckets-grid { grid-template-columns: repeat(3, 1fr); }
+            .performance-metrics-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .profit-buckets-grid { grid-template-columns: repeat(2, 1fr); }
+            .performance-deck-header { flex-direction: column; align-items: flex-start; }
+            .filter-dropdown-wrap { width: 100%; justify-content: space-between; }
+        }
+        @media (max-width: 480px) {
+            .profit-buckets-grid { grid-template-columns: 1fr; }
+            .performance-metrics-grid { grid-template-columns: 1fr; }
+            .footer-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-bag-shopping"></i> SmartBuyHub
+        </a>
+        <div class="nav-right">
+            <a href="profile.html"><i class="fa-solid fa-user"></i> <span id="navProfileName">My Profile</span></a>
+        </div>
+    </nav>
+
+    <!-- Header Gradient Banner -->
+    <div class="header-banner">
+        <div class="header-content">
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <a href="earnings.html">My Earnings</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <span>Reports</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container -->
+    <div class="main-container">
+        <!-- 1. All Time Total Profit Card -->
+        <div class="dashboard-card">
+            <div class="all-time-profit-header">
+                <span>All Time Total Profit</span>
+                <i class="fa-solid fa-circle-question info-tip" title="Calculated aggregate of pending + confirmed + paid earnings."></i>
+            </div>
+            
+            <div class="all-time-profit-value">₹<span id="allTimeProfitValue">0.00</span></div>
+
+            <!-- 5 Sub-metric buckets -->
+            <div class="profit-buckets-grid">
+                <!-- Pending -->
+                <div class="bucket-box pending">
+                    <div class="bucket-title">
+                        <span>Pending</span>
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <div class="bucket-value">₹<span id="bucketPending">0.00</span></div>
+                </div>
+
+                <!-- Confirmed -->
+                <div class="bucket-box confirmed">
+                    <div class="bucket-title">
+                        <span>Confirmed</span>
+                        <i class="fa-regular fa-circle-check"></i>
+                    </div>
+                    <div class="bucket-value">₹<span id="bucketConfirmed">0.00</span></div>
+                </div>
+
+                <!-- Paid -->
+                <div class="bucket-box paid">
+                    <div class="bucket-title">
+                        <span>Paid</span>
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <div class="bucket-value">₹<span id="bucketPaid">0.00</span></div>
+                </div>
+
+                <!-- Requested -->
+                <div class="bucket-box requested">
+                    <div class="bucket-title">
+                        <span>Requested</span>
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </div>
+                    <div class="bucket-value">₹<span id="bucketRequested">0.00</span></div>
+                </div>
+
+                <!-- Cancelled -->
+                <div class="bucket-box cancelled">
+                    <div class="bucket-title">
+                        <span>Cancelled</span>
+                        <i class="fa-regular fa-circle-xmark"></i>
+                    </div>
+                    <div class="bucket-value">₹<span id="bucketCancelled">0.00</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Performance Breakdown Deck -->
+        <div class="dashboard-card">
+            <div class="performance-deck-header">
+                <div class="performance-deck-title-group">
+                    <div class="rupee-badge">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                    </div>
+                    <div class="performance-deck-text-group">
+                        <h3>Performance Breakdown Overview</h3>
+                        <p id="timestampLine">Data was last uploaded on...</p>
+                    </div>
+                </div>
+
+                <div class="filter-dropdown-wrap">
+                    <span class="filter-dropdown-label">Filter by:</span>
+                    <select class="filter-select" id="retailerFilter">
+                        <option value="All">All Retailers</option>
+                        <option value="Amazon">Amazon</option>
+                        <option value="Flipkart">Flipkart</option>
+                        <option value="Myntra">Myntra</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 4 Flat Pastel Metric Panels -->
+            <div class="performance-metrics-grid">
+                <!-- Clicks -->
+                <div class="perf-card clicks">
+                    <div class="perf-label-group">
+                        <span>Clicks</span>
+                        <i class="fa-solid fa-hand-pointer"></i>
+                    </div>
+                    <div class="perf-value" id="perfClicks">0</div>
+                </div>
+
+                <!-- Txns -->
+                <div class="perf-card txns">
+                    <div class="perf-label-group">
+                        <span>Txns</span>
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
+                    <div class="perf-value" id="perfTxns">0</div>
+                </div>
+
+                <!-- Profit -->
+                <div class="perf-card profit">
+                    <div class="perf-label-group">
+                        <span>Profit</span>
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <div class="perf-value">₹<span id="perfProfit">0.00</span></div>
+                </div>
+
+                <!-- Conv. Rate -->
+                <div class="perf-card conv">
+                    <div class="perf-label-group">
+                        <span>Conv. Rate</span>
+                        <i class="fa-solid fa-percent"></i>
+                    </div>
+                    <div class="perf-value" id="perfConv">0.0%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Retailer Breakdown Cards -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fa-solid fa-chart-simple" style="color: var(--primary);"></i> Brand Breakdown Analytics</h3>
+            </div>
+            
+            <div id="retailerContainer">
+                <!-- Injected dynamically -->
+            </div>
+        </div>
+
+        <!-- 4. Links Performance Cards -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fa-solid fa-link" style="color: var(--primary);"></i> Active Link Logs</h3>
+            </div>
+
+            <div id="linkPerformanceContainer">
+                <!-- Injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Link copied to clipboard!</div>
+
+    <!-- Footer -->
+    <footer class="footer-wrap">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>About SmartBuyHub</h4>
+                <ul>
+                    <li><a href="help.html#about">About Us</a></li>
+                    <li><a href="help.html#blog">Blog</a></li>
+                    <li><a href="help.html">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Useful Reads</h4>
+                <ul>
+                    <li><a href="help.html#terms">Terms and Conditions</a></li>
+                    <li><a href="help.html#privacy">Privacy & Cookie Policy</a></li>
+                    <li><a href="help.html#anti-spam">Anti-Spam Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect With Us</h4>
+                <ul>
+                    <li><a href="help.html">Get Help</a></li>
+                    <li><a href="https://t.me/smartbuyhub" target="_blank">Telegram</a></li>
+                    <li><a href="https://youtube.com/smartbuyhub" target="_blank">YouTube</a></li>
+                    <li><a href="https://instagram.com/smartbuyhub" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Download App</h4>
+                <a href="https://play.google.com/store" target="_blank" class="playstore-btn">
+                    <i class="fa-brands fa-google-play"></i>
+                    <div class="btn-text">
+                        <span class="text-top">Get it on</span>
+                        <span class="text-bottom">Google Play</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 SmartBuyHub. All rights reserved. Built with premium design.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+
+            if (!token || !userId) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Copy to Clipboard logic
+            window.copyLink = (text) => {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('Affiliate link copied to clipboard!');
+                }).catch(err => {
+                    console.error('Could not copy link: ', err);
+                });
+            };
+
+            const toast = document.getElementById('toast');
+            let toastTimeout;
+            const showToast = (msg) => {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            };
+
+            // 1. Generate live dynamic upload timestamp
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            const timeStr = today.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            document.getElementById('timestampLine').textContent = `Data was last uploaded on ${dateStr} at ${timeStr}`;
+
+            // Fetch live profile details for navbar name
+            try {
+                const pRes = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                if (pRes.ok) {
+                    const userData = await pRes.json();
+                    document.getElementById('navProfileName').textContent = userData.name;
+                }
+            } catch(e) { console.error(e); }
+
+            // Dynamic reports state holders
+            let globalClickStats = [];
+            let globalOrders = [];
+            let financialData = {};
+
+            // Fetch everything
+            await loadFinancialBreakdown();
+            await loadPerformanceReports();
+
+            async function loadFinancialBreakdown() {
+                try {
+                    const res = await fetch(`http://localhost:3000/api/user/financial-breakdown?userId=${userId}`);
+                    if (res.ok) {
+                        financialData = await res.json();
+                        
+                        // Update 5 buckets
+                        document.getElementById('allTimeProfitValue').textContent = parseFloat(financialData.allTimeTotalProfit).toFixed(2);
+                        document.getElementById('bucketPending').textContent = parseFloat(financialData.pending).toFixed(2);
+                        document.getElementById('bucketConfirmed').textContent = parseFloat(financialData.confirmed).toFixed(2);
+                        document.getElementById('bucketPaid').textContent = parseFloat(financialData.paid).toFixed(2);
+                        document.getElementById('bucketRequested').textContent = parseFloat(financialData.requested).toFixed(2);
+                        document.getElementById('bucketCancelled').textContent = parseFloat(financialData.cancelled).toFixed(2);
+                    }
+                } catch(e) { console.error(e); }
+            }
+
+            async function loadPerformanceReports() {
+                try {
+                    // Fetch click logs
+                    const clickRes = await fetch(`http://localhost:3000/api/user/reports?userId=${userId}`);
+                    if (clickRes.ok) {
+                        globalClickStats = await clickRes.json();
+                    }
+
+                    // Fetch order logs for transactions
+                    const orderRes = await fetch(`http://localhost:3000/api/user/orders?userId=${userId}`);
+                    if (orderRes.ok) {
+                        globalOrders = await orderRes.json();
+                    }
+
+                    // Render widgets initially
+                    renderPerformanceMetrics('All');
+                    renderRetailerBreakdown();
+                    renderLinkPerformance();
+                } catch (e) { console.error(e); }
+            }
+
+            // Interactive filter trigger
+            const filterSelect = document.getElementById('retailerFilter');
+            filterSelect.addEventListener('change', (e) => {
+                renderPerformanceMetrics(e.target.value);
+            });
+
+            function renderPerformanceMetrics(filterBrand) {
+                let filteredClicks = globalClickStats;
+                let filteredOrders = globalOrders;
+
+                if (filterBrand !== 'All') {
+                    filteredClicks = globalClickStats.filter(c => c.retailer.toLowerCase() === filterBrand.toLowerCase());
+                    filteredOrders = globalOrders.filter(o => o.userId === userId && o.retailer.toLowerCase() === filterBrand.toLowerCase());
+                }
+
+                // Clicks count
+                const totalClicks = filteredClicks.reduce((sum, c) => sum + c.clicks, 0);
+
+                // Transactions count
+                const totalTxns = filteredOrders.length;
+
+                // Profit sum
+                // For 'All', profit sum is confirmed + pending order profits. Or we can read it from the database orders
+                const totalProfit = filteredOrders.reduce((sum, o) => sum + o.profit, 0);
+
+                // Conversion Rate
+                const convRate = totalClicks > 0 ? ((totalTxns / totalClicks) * 100) : 0;
+
+                // Render in UI
+                document.getElementById('perfClicks').textContent = totalClicks;
+                document.getElementById('perfTxns').textContent = totalTxns;
+                document.getElementById('perfProfit').textContent = parseFloat(totalProfit).toFixed(2);
+                document.getElementById('perfConv').textContent = convRate.toFixed(1) + '%';
+            }
+
+            function renderRetailerBreakdown() {
+                const retailerData = {};
+                globalClickStats.forEach(c => {
+                    if (!retailerData[c.retailer]) {
+                        retailerData[c.retailer] = { clicks: 0, earnings: 0 };
+                    }
+                    retailerData[c.retailer].clicks += c.clicks;
+                    retailerData[c.retailer].earnings += c.earnings;
+                });
+
+                const container = document.getElementById('retailerContainer');
+                container.innerHTML = '';
+
+                Object.keys(retailerData).forEach(ret => {
+                    const row = document.createElement('div');
+                    row.className = 'retailer-row';
+                    const letter = ret.charAt(0);
+                    const brandClass = `brand-${ret.toLowerCase()}`;
+
+                    row.innerHTML = `
+                        <div class="retailer-info">
+                            <div class="retailer-icon ${brandClass}">${letter}</div>
+                            <span class="retailer-name">${ret}</span>
+                        </div>
+                        <div class="retailer-stats">
+                            <div class="stat-group">
+                                <span class="stat-num">${retailerData[ret].clicks}</span>
+                                <span class="stat-lbl">Clicks</span>
+                            </div>
+                            <div class="stat-group">
+                                <span class="stat-num" style="color: var(--pastel-confirmed-text);">₹${parseFloat(retailerData[ret].earnings).toFixed(2)}</span>
+                                <span class="stat-lbl">Earnings</span>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(row);
+                });
+            }
+
+            function renderLinkPerformance() {
+                const container = document.getElementById('linkPerformanceContainer');
+                container.innerHTML = '';
+
+                if (globalClickStats.length > 0) {
+                    globalClickStats.forEach(c => {
+                        const card = document.createElement('div');
+                        card.className = 'link-perf-card';
+                        card.innerHTML = `
+                            <div class="link-details">
+                                <div class="link-title">${c.title}</div>
+                                <div class="link-url">${c.url}</div>
+                            </div>
+                            <div class="link-metrics">
+                                <div class="stat-group" style="text-align: center; min-width: 60px;">
+                                    <span class="stat-num">${c.clicks}</span>
+                                    <span class="stat-lbl">Clicks</span>
+                                </div>
+                                <div class="stat-group" style="text-align: center; min-width: 60px;">
+                                    <span class="stat-num" style="color: var(--pastel-confirmed-text);">₹${parseFloat(c.earnings).toFixed(2)}</span>
+                                    <span class="stat-lbl">Earnings</span>
+                                </div>
+                                <button class="btn-copy" onclick="copyLink('${c.url}')">
+                                    <i class="fa-regular fa-copy"></i> Copy
+                                </button>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">No link logs available.</div>';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Payment - SmartBuyHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e6c46;
+            --primary-light: #469b61;
+            --primary-gradient: linear-gradient(135deg, #1e6c46 0%, #469b61 100%);
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --accent-emerald: #10b981;
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Navbar */
+        .navbar { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; }
+        .nav-right a { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+
+        /* Header Gradient Banner */
+        .header-banner {
+            background: var(--primary-gradient);
+            padding: 1.5rem 2rem 5rem 2rem;
+            color: white;
+        }
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .breadcrumbs {
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+        .breadcrumbs span {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Container */
+        .main-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: -4rem auto 4rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 1.5rem;
+        }
+
+        /* Cards styling */
+        .glass-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Available balance styling */
+        .balance-banner {
+            background: #f0fdf4;
+            border: 1px solid #bcf0da;
+            padding: 1.25rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .balance-label {
+            font-size: 0.85rem;
+            color: #065f46;
+            font-weight: 600;
+        }
+        .balance-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #03543f;
+        }
+
+        /* Methods switcher */
+        .method-selector {
+            display: flex;
+            background: #f3f4f6;
+            padding: 0.25rem;
+            border-radius: 8px;
+            gap: 0.25rem;
+            margin-bottom: 1.5rem;
+        }
+        .method-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 0.65rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .method-btn.active {
+            background: var(--card-bg);
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary-light);
+        }
+        .form-alert {
+            font-size: 0.8rem;
+            margin-top: 0.35rem;
+            display: none;
+        }
+        .form-alert.error { color: var(--danger); display: block; }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.85rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .submit-btn:hover {
+            background: #175436;
+        }
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Rules card sidebar */
+        .rules-card {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .rules-title {
+            color: #92400e;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .rules-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .rules-list li {
+            font-size: 0.85rem;
+            color: #78350f;
+            margin-bottom: 0.65rem;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .rules-list li i {
+            margin-top: 0.2rem;
+            font-size: 0.75rem;
+            color: #d97706;
+        }
+
+        /* Transaction/Payment History */
+        .history-card {
+            grid-column: 1 / -1;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th {
+            padding: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.92rem;
+        }
+        .status-tag {
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+        }
+        .status-tag.transferred { background: #d1fae5; color: #065f46; }
+        .status-tag.pending { background: #fef3c7; color: #92400e; }
+
+        /* Dark Premium Footer */
+        .footer-wrap {
+            background: #222222;
+            color: #9ca3af;
+            padding: 3rem 2rem 2rem 2rem;
+            margin-top: auto;
+            border-top: 4px solid var(--primary);
+        }
+        .footer-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
+        }
+        .footer-col h4 {
+            color: #4ade80;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.75rem; }
+        .footer-col ul li a { color: #9ca3af; text-decoration: none; font-size: 0.88rem; }
+        .footer-col ul li a:hover { color: white; }
+        .playstore-btn {
+            background: #000000; border: 1px solid #374151; border-radius: 8px; padding: 0.5rem 1rem;
+            display: inline-flex; align-items: center; gap: 0.75rem; color: white; text-decoration: none; width: fit-content;
+        }
+        .playstore-btn i { font-size: 1.75rem; color: #3b82f6; }
+        .btn-text { display: flex; flex-direction: column; line-height: 1.2; }
+        .text-top { font-size: 0.65rem; text-transform: uppercase; color: #9ca3af; }
+        .text-bottom { font-size: 0.95rem; font-weight: 700; }
+        .footer-bottom {
+            max-width: 1000px; margin: 2.5rem auto 0 auto; padding-top: 1.5rem; border-top: 1px solid #374151;
+            text-align: center; font-size: 0.8rem; color: #6b7280;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1e293b;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 480px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-bag-shopping"></i> SmartBuyHub
+        </a>
+        <div class="nav-right">
+            <a href="profile.html"><i class="fa-solid fa-user"></i> <span id="navProfileName">My Profile</span></a>
+        </div>
+    </nav>
+
+    <!-- Header Gradient Banner -->
+    <div class="header-banner">
+        <div class="header-content">
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <a href="earnings.html">My Earnings</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <span>Request Payment</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container Grid -->
+    <div class="main-container">
+        <!-- Payout Request Left Column -->
+        <div>
+            <div class="glass-card">
+                <h3 class="card-title"><i class="fa-solid fa-money-bill-transfer" style="color: var(--primary);"></i> Payout Request</h3>
+                
+                <!-- Dynamic Balance Banner -->
+                <div class="balance-banner">
+                    <span class="balance-label">Available for Withdrawal</span>
+                    <span class="balance-value">₹<span id="payoutBalance">0.00</span></span>
+                </div>
+
+                <!-- Methods switcher -->
+                <div class="method-selector">
+                    <button class="method-btn active" id="methodUpiBtn">
+                        <i class="fa-solid fa-wallet"></i> UPI Transfer
+                    </button>
+                    <button class="method-btn" id="methodBankBtn">
+                        <i class="fa-solid fa-building-columns"></i> Bank Transfer
+                    </button>
+                </div>
+
+                <!-- Withdrawal Request Form -->
+                <form id="payoutForm">
+                    <!-- Amount Input -->
+                    <div class="form-group">
+                        <label for="withdrawAmount">Withdrawal Amount (₹)</label>
+                        <input type="number" id="withdrawAmount" placeholder="Enter amount to withdraw..." required min="10" step="0.01">
+                        <div class="form-alert" id="amountError">Please enter a valid amount between ₹10 and your max balance.</div>
+                    </div>
+
+                    <!-- UPI Form Fields -->
+                    <div id="upiFormSection">
+                        <div class="form-group">
+                            <label for="upiIdInput">UPI ID (VPA)</label>
+                            <input type="text" id="upiIdInput" placeholder="e.g. tarun@ybl">
+                            <div class="form-alert" id="upiError">Please enter a valid UPI ID (e.g., user@bank).</div>
+                        </div>
+                    </div>
+
+                    <!-- Bank Form Fields (hidden by default) -->
+                    <div id="bankFormSection" style="display: none;">
+                        <div class="form-group">
+                            <label for="bankAccount">Account Number</label>
+                            <input type="text" id="bankAccount" placeholder="Enter your bank account number...">
+                        </div>
+                        <div class="form-group">
+                            <label for="bankHolder">Account Holder Name</label>
+                            <input type="text" id="bankHolder" placeholder="Enter holder's name as in bank...">
+                        </div>
+                        <div class="form-group">
+                            <label for="bankIfsc">IFSC Code</label>
+                            <input type="text" id="bankIfsc" placeholder="e.g. SBIN0001234">
+                            <div class="form-alert" id="bankError">Please fill out all bank fields correctly.</div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fa-solid fa-paper-plane"></i> Request Withdrawal
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Rules Sidebar Column -->
+        <div>
+            <div class="rules-card">
+                <h4 class="rules-title"><i class="fa-solid fa-triangle-exclamation"></i> Withdrawal Guidelines</h4>
+                <ul class="rules-list">
+                    <li>
+                        <i class="fa-solid fa-circle"></i>
+                        <span>Minimum withdrawal limit is only **₹10.00** so you can easily receive your profit!</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle"></i>
+                        <span>UPI withdrawals are typically transferred instantly or within 24 hours of approval.</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle"></i>
+                        <span>Bank transfers take 1-3 business days depending on bank clearance times.</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle"></i>
+                        <span>Ensure your UPI ID or Bank account details are correct. SmartBuyHub is not responsible for funds sent to wrong accounts.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Transaction/Payment History Row -->
+        <div class="glass-card history-card" id="history">
+            <h3 class="card-title"><i class="fa-solid fa-clock-rotate-left" style="color: var(--primary);"></i> Transaction History</h3>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Request Date</th>
+                            <th>Amount Requested</th>
+                            <th>Payout Method</th>
+                            <th>UTR / Receipt</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentHistoryBody">
+                        <!-- Filled by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Payout requested successfully!</div>
+
+    <!-- Footer -->
+    <footer class="footer-wrap">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>About SmartBuyHub</h4>
+                <ul>
+                    <li><a href="help.html#about">About Us</a></li>
+                    <li><a href="help.html#blog">Blog</a></li>
+                    <li><a href="help.html">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Useful Reads</h4>
+                <ul>
+                    <li><a href="help.html#terms">Terms and Conditions</a></li>
+                    <li><a href="help.html#privacy">Privacy & Cookie Policy</a></li>
+                    <li><a href="help.html#anti-spam">Anti-Spam Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect With Us</h4>
+                <ul>
+                    <li><a href="help.html">Get Help</a></li>
+                    <li><a href="https://t.me/smartbuyhub" target="_blank">Telegram</a></li>
+                    <li><a href="https://youtube.com/smartbuyhub" target="_blank">YouTube</a></li>
+                    <li><a href="https://instagram.com/smartbuyhub" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Download App</h4>
+                <a href="https://play.google.com/store" target="_blank" class="playstore-btn">
+                    <i class="fa-brands fa-google-play"></i>
+                    <div class="btn-text">
+                        <span class="text-top">Get it on</span>
+                        <span class="text-bottom">Google Play</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 SmartBuyHub. All rights reserved. Built with premium design.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+
+            if (!token || !userId) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            let currentBalance = 0;
+            let currentMethod = 'UPI'; // default
+
+            const formatCurrency = (val) => {
+                return new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR'
+                }).format(val);
+            };
+
+            const toast = document.getElementById('toast');
+            let toastTimeout;
+            const showToast = (msg) => {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            };
+
+            // Fetch live profile details for navbar & balance banner
+            const fetchUserProfile = async () => {
+                try {
+                    const pRes = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                    if (pRes.ok) {
+                        const userData = await pRes.json();
+                        document.getElementById('navProfileName').textContent = userData.name;
+                        currentBalance = userData.totalProfit;
+                        document.getElementById('payoutBalance').textContent = parseFloat(currentBalance).toFixed(2);
+                        document.getElementById('withdrawAmount').max = currentBalance;
+                    }
+                } catch(e) { console.error(e); }
+            };
+
+            // Fetch payout transaction history
+            const fetchPaymentHistory = async () => {
+                try {
+                    const res = await fetch(`http://localhost:3000/api/user/payments?userId=${userId}`);
+                    if (res.ok) {
+                        const txns = await res.json();
+                        const tbody = document.getElementById('paymentHistoryBody');
+                        tbody.innerHTML = '';
+
+                        if (txns.length === 0) {
+                            tbody.innerHTML = `
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 3rem;">
+                                        <i class="fa-solid fa-receipt" style="font-size: 2rem; margin-bottom: 0.5rem; display: block; opacity: 0.3;"></i>
+                                        No transactions yet. Complete orders to withdraw profit!
+                                    </td>
+                                </tr>
+                            `;
+                            return;
+                        }
+
+                        txns.forEach(t => {
+                            const tr = document.createElement('tr');
+                            const statClass = t.status.toLowerCase();
+                            tr.innerHTML = `
+                                <td style="font-weight: 600; color: var(--primary);">${t.id}</td>
+                                <td>${t.date}</td>
+                                <td style="font-weight: 700; color: #111827;">${formatCurrency(t.amount)}</td>
+                                <td style="font-size: 0.85rem; color: var(--text-muted);">${t.method}</td>
+                                <td style="font-family: monospace; font-size: 0.85rem;">${t.utr}</td>
+                                <td>
+                                    <span class="status-tag ${statClass}">${t.status}</span>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                } catch(e) { console.error(e); }
+            };
+
+            // Payment switch layout
+            const upiBtn = document.getElementById('methodUpiBtn');
+            const bankBtn = document.getElementById('methodBankBtn');
+            const upiSec = document.getElementById('upiFormSection');
+            const bankSec = document.getElementById('bankFormSection');
+
+            upiBtn.addEventListener('click', () => {
+                upiBtn.classList.add('active');
+                bankBtn.classList.remove('active');
+                upiSec.style.display = 'block';
+                bankSec.style.display = 'none';
+                currentMethod = 'UPI';
+            });
+
+            bankBtn.addEventListener('click', () => {
+                bankBtn.classList.add('active');
+                upiBtn.classList.remove('active');
+                bankSec.style.display = 'block';
+                upiSec.style.display = 'none';
+                currentMethod = 'Bank Transfer';
+            });
+
+            // Form Submit handler
+            const form = document.getElementById('payoutForm');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Clear validation errors
+                document.getElementById('amountError').classList.remove('error');
+                document.getElementById('upiError').classList.remove('error');
+                document.getElementById('bankError').classList.remove('error');
+
+                const amount = parseFloat(document.getElementById('withdrawAmount').value);
+
+                // Basic validation checks
+                if (isNaN(amount) || amount < 10 || amount > currentBalance) {
+                    document.getElementById('amountError').classList.add('error');
+                    return;
+                }
+
+                let details = '';
+
+                if (currentMethod === 'UPI') {
+                    const upiVal = document.getElementById('upiIdInput').value.trim();
+                    if (!upiVal || !upiVal.includes('@')) {
+                        document.getElementById('upiError').classList.add('error');
+                        return;
+                    }
+                    details = upiVal;
+                } else {
+                    const account = document.getElementById('bankAccount').value.trim();
+                    const holder = document.getElementById('bankHolder').value.trim();
+                    const ifsc = document.getElementById('bankIfsc').value.trim();
+                    
+                    if (!account || !holder || !ifsc) {
+                        document.getElementById('bankError').classList.add('error');
+                        return;
+                    }
+                    details = `A/C: ${account}, IFSC: ${ifsc}, Holder: ${holder}`;
+                }
+
+                // Send request to API
+                try {
+                    const res = await fetch('http://localhost:3000/api/user/request-payment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            userId,
+                            amount,
+                            method: currentMethod,
+                            details
+                        })
+                    });
+
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        showToast(`Withdrawal of ₹${amount.toFixed(2)} requested successfully!`);
+                        
+                        // Clear form inputs
+                        document.getElementById('withdrawAmount').value = '';
+                        document.getElementById('upiIdInput').value = '';
+                        document.getElementById('bankAccount').value = '';
+                        document.getElementById('bankHolder').value = '';
+                        document.getElementById('bankIfsc').value = '';
+
+                        // Refresh balance & table history
+                        await fetchUserProfile();
+                        await fetchPaymentHistory();
+                    } else {
+                        showToast(data.error || 'Server error, please try again.');
+                    }
+                } catch(err) {
+                    console.error("Payment submission failed", err);
+                    showToast('Failed to submit request. Is the backend offline?');
+                }
+            });
+
+            // Initial load
+            await fetchUserProfile();
+            await fetchPaymentHistory();
+
+            // Hash navigation handling if clicked payment history
+            if (window.location.hash === '#history') {
+                const historyEl = document.getElementById('history');
+                if (historyEl) {
+                    historyEl.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

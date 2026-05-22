@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Payout Deck - SmartBuyHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #111827; /* Dark charcoal/black deck */
+            --primary-accent: #10b981; /* Premium Emerald */
+            --primary-gradient: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+            --text-dark: #111827;
+            --text-muted: #4b5563;
+            --border-color: #e5e7eb;
+            --accent-emerald: #10b981;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Navbar */
+        .navbar { background: var(--primary); color: white; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 2px solid var(--primary-accent); }
+        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; }
+        .logo span { color: var(--primary-accent); }
+        .nav-right { display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 600; background: rgba(16, 185, 129, 0.15); color: var(--primary-accent); padding: 0.5rem 1rem; border-radius: 9999px; }
+
+        /* Header Gradient Banner */
+        .header-banner {
+            background: var(--primary-gradient);
+            padding: 2.5rem 2rem 6rem 2rem;
+            color: white;
+            position: relative;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+        .header-subtitle {
+            font-size: 0.95rem;
+            color: #9ca3af;
+        }
+
+        /* Container */
+        .main-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: -4.5rem auto 4rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+        .stat-card.commission::before { background-color: var(--primary-accent); }
+        .stat-card.payouts::before { background-color: var(--accent-blue); }
+        .stat-card.sales::before { background-color: var(--accent-purple); }
+
+        .stat-info h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        .stat-info .value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #111827;
+            letter-spacing: -0.02em;
+        }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.25rem;
+        }
+        .commission .stat-icon { background: rgba(16, 185, 129, 0.1); color: var(--primary-accent); }
+        .payouts .stat-icon { background: rgba(59, 130, 246, 0.1); color: var(--accent-blue); }
+        .sales .stat-icon { background: rgba(139, 92, 246, 0.1); color: var(--accent-purple); }
+
+        /* Dashboard Main Layout */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+        @media(max-width: 992px) {
+            .layout-grid { grid-template-columns: 1fr; }
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            padding: 1.75rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* User List and Logs Table */
+        .table-responsive { width: 100%; overflow-x: auto; }
+        .data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
+        .data-table th { padding: 0.85rem 1rem; background-color: #f9fafb; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color); }
+        .data-table td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        .data-table tr:hover { background-color: #fcfcfc; }
+        .data-table tr:last-child td { border-bottom: none; }
+
+        .btn-action {
+            background: var(--primary-accent);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn-action:hover { background-color: #059669; }
+        .btn-action:disabled { background-color: #d1d5db; color: #9ca3af; cursor: not-allowed; }
+
+        /* Modal Payout Dialog */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal-box {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-header h3 { font-size: 1.25rem; font-weight: 700; }
+        .btn-close-modal { background: none; border: none; font-size: 1.25rem; color: var(--text-muted); cursor: pointer; }
+
+        /* Forms */
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .form-input {
+            width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px;
+            font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-input:focus { outline: none; border-color: var(--primary-accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+        .form-input[readonly] { background-color: #f3f4f6; color: #6b7280; cursor: not-allowed; }
+
+        .btn-submit-payout {
+            width: 100%;
+            background: var(--primary-accent);
+            color: white;
+            border: none;
+            padding: 0.85rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 0.5rem;
+        }
+        .btn-submit-payout:hover { background-color: #059669; }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1e293b;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 3000;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* Payout logs summary on right column */
+        .recent-payout-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .payout-item {
+            background: #f9fafb; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .payout-item-left { display: flex; flex-direction: column; gap: 0.25rem; }
+        .payout-item-title { font-weight: 600; font-size: 0.88rem; }
+        .payout-item-date { font-size: 0.75rem; color: var(--text-muted); }
+        .payout-item-amount { font-weight: 700; font-size: 0.95rem; color: var(--primary-accent); }
+
+        /* Footer */
+        .footer-wrap {
+            background: #222222;
+            color: #9ca3af;
+            padding: 2rem;
+            text-align: center;
+            margin-top: auto;
+            border-top: 4px solid var(--primary-accent);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-bag-shopping"></i> SmartBuy<span>Hub</span>
+        </a>
+        <div class="nav-right">
+            <i class="fa-solid fa-shield-halved"></i> Owner Control Deck
+        </div>
+    </nav>
+
+    <!-- Header Banner -->
+    <div class="header-banner">
+        <div class="header-content">
+            <h1 class="header-title">Owner Commission & Payout Terminal</h1>
+            <p class="header-subtitle">Directly manage cashouts, ledger settlements, and live platform earnings analytics.</p>
+        </div>
+    </div>
+
+    <!-- Container -->
+    <div class="main-container">
+        <!-- Private Owner Stats -->
+        <div class="stats-grid">
+            <div class="stat-card commission">
+                <div class="stat-info">
+                    <h4>Owner Platform Commission</h4>
+                    <div class="value">₹<span id="statOwnerComm">0.00</span></div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fa-solid fa-coins"></i>
+                </div>
+            </div>
+
+            <div class="stat-card payouts">
+                <div class="stat-info">
+                    <h4>Total Payouts Settled</h4>
+                    <div class="value">₹<span id="statPayouts">0.00</span></div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+            </div>
+
+            <div class="stat-card sales">
+                <div class="stat-info">
+                    <h4>Gross Sales Volume</h4>
+                    <div class="value">₹<span id="statGrossSales">0.00</span></div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard View -->
+        <div class="layout-grid">
+            <!-- Left Side: User Directory -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fa-solid fa-users" style="color: var(--primary-accent);"></i> Registered Users Directory
+                    </h3>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Contact details</th>
+                                <th>Current Dynamic Balance</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right Side: Recent Payout Logs -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fa-solid fa-receipt" style="color: var(--accent-blue);"></i> Processed Payouts
+                    </h3>
+                </div>
+
+                <div class="recent-payout-list" id="payoutList">
+                    <!-- Injected dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payout Settlement Dialog Modal -->
+    <div class="modal-overlay" id="payoutModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Settle User Earnings Payout</h3>
+                <button class="btn-close-modal" id="btnCloseModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <form id="payoutForm">
+                <input type="hidden" id="payoutUserId">
+                
+                <div class="form-group">
+                    <label class="form-label">User Profile</label>
+                    <input type="text" class="form-input" id="payoutUserName" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Available Balance (INR)</label>
+                    <input type="text" class="form-input" id="payoutUserBalance" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Payout Amount (₹)</label>
+                    <input type="number" class="form-input" id="payoutAmount" min="1" step="0.01" required placeholder="Enter amount to pay">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Transfer Channel</label>
+                    <select class="form-input" id="payoutMethod" required>
+                        <option value="UPI">UPI Transfer</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="Cash">Cash Settlement</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Payment Reference Details</label>
+                    <input type="text" class="form-input" id="payoutDetails" placeholder="UPI address or bank info" required>
+                </div>
+
+                <button type="submit" class="btn-submit-payout">Confirm Transfer & Deduct Balance</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Payout processed successfully!</div>
+
+    <!-- Footer -->
+    <footer class="footer-wrap">
+        &copy; 2026 SmartBuyHub. Private Owner Administration Terminal. Harmorious & State-of-the-Art control.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('payoutModal');
+            const btnCloseModal = document.getElementById('btnCloseModal');
+            const payoutForm = document.getElementById('payoutForm');
+            const toast = document.getElementById('toast');
+            
+            // Load all stats and tables
+            loadAdminDeck();
+
+            async function loadAdminDeck() {
+                try {
+                    // 1. Fetch Owner Private Commission stats
+                    const statsRes = await fetch('http://localhost:3000/api/admin/stats');
+                    if (statsRes.ok) {
+                        const stats = await statsRes.json();
+                        document.getElementById('statOwnerComm').textContent = stats.ownerCommission.toFixed(2);
+                        document.getElementById('statPayouts').textContent = stats.totalPayouts.toFixed(2);
+                        document.getElementById('statGrossSales').textContent = stats.totalOrdersAmount.toFixed(2);
+                    }
+
+                    // 2. Fetch Users Directory
+                    const usersRes = await fetch('http://localhost:3000/api/admin/users');
+                    if (usersRes.ok) {
+                        const users = await usersRes.json();
+                        const tbody = document.getElementById('userTableBody');
+                        tbody.innerHTML = '';
+
+                        users.forEach(u => {
+                            const tr = document.createElement('tr');
+                            const canPay = u.totalProfit > 0;
+                            
+                            tr.innerHTML = `
+                                <td style="font-weight: 700; color: #4b5563;">${u.id}</td>
+                                <td style="font-weight: 600;">${u.name}</td>
+                                <td>
+                                    <div style="font-size: 0.85rem; color: #111827;">${u.email}</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">${u.phone}</div>
+                                </td>
+                                <td style="font-weight: 700; color: #111827;">₹${parseFloat(u.totalProfit).toFixed(2)}</td>
+                                <td style="text-align: right;">
+                                    <button class="btn-action" ${canPay ? '' : 'disabled'} onclick="openPayoutModal('${u.id}', '${u.name.replace(/'/g, "\\'")}', ${u.totalProfit})">
+                                        <i class="fa-solid fa-paper-plane"></i> Process Payout
+                                    </button>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+
+                    // 3. Fetch Global Payouts Logs (payout list on right)
+                    // We can reuse user profile payouts API or just fetch all payments since this is owner panel.
+                    // For now, we will query user payments dynamically for all users or render total payment logs from db.
+                    // Let's call /api/admin/users and gather all payouts or fetch payments from server directly
+                    // Wait, server has payments. Let's create a temporary backend list by fetching payments for each user, 
+                    // or better, we can query all payments. In server.js we can add a private API or since we have db.payments, 
+                    // let's look at the database. Yes, in server.js, /api/user/payments returns payments for a userId. Let's see if we can get all payouts.
+                    // Let's create a private API on backend or fetch user payments for all. To make it extremely simple and high performance,
+                    // we can get the global list of payments. Let's modify server.js slightly if needed, but wait! We can just fetch user payments
+                    // for the active users or add a simple endpoint GET /api/admin/payments to return all payouts. That is super clean.
+                    // Wait, let's look at how server.js serves payments. It does app.get('/api/user/payments', ...) which filters by userId.
+                    // Let's add GET /api/admin/payments which returns ALL payments in server.js. Let's make sure it is added.
+                    const payRes = await fetch('http://localhost:3000/api/admin/payments');
+                    if (payRes.ok) {
+                        const payments = await payRes.json();
+                        const list = document.getElementById('payoutList');
+                        list.innerHTML = '';
+                        
+                        if (payments && payments.length > 0) {
+                            payments.slice(0, 10).forEach(p => {
+                                const div = document.createElement('div');
+                                div.className = 'payout-item';
+                                div.innerHTML = `
+                                    <div class="payout-item-left">
+                                        <div class="payout-item-title">${p.method}</div>
+                                        <div class="payout-item-date">${p.date} &bull; UTR: ${p.utr || 'N/A'}</div>
+                                    </div>
+                                    <div class="payout-item-amount">₹${parseFloat(p.amount).toFixed(2)}</div>
+                                `;
+                                list.appendChild(div);
+                            });
+                        } else {
+                            list.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">No payout records found.</div>';
+                        }
+                    }
+                } catch (e) {
+                    console.error("Failed to load admin stats", e);
+                }
+            }
+
+            // Expose openPayoutModal to global scope
+            window.openPayoutModal = (id, name, balance) => {
+                document.getElementById('payoutUserId').value = id;
+                document.getElementById('payoutUserName').value = name;
+                document.getElementById('payoutUserBalance').value = `₹${parseFloat(balance).toFixed(2)}`;
+                document.getElementById('payoutAmount').value = balance; // Default to full settlement
+                document.getElementById('payoutAmount').max = balance;
+                
+                // Show default details helper based on method
+                updateDetailsPlaceholder();
+                
+                modal.classList.add('active');
+            };
+
+            const methodSelect = document.getElementById('payoutMethod');
+            methodSelect.addEventListener('change', updateDetailsPlaceholder);
+
+            function updateDetailsPlaceholder() {
+                const method = methodSelect.value;
+                const detailsInput = document.getElementById('payoutDetails');
+                if (method === 'UPI') {
+                    detailsInput.placeholder = 'e.g. name@upi';
+                } else if (method === 'Bank Transfer') {
+                    detailsInput.placeholder = 'e.g. A/C: 12345, IFSC: SBIN0001';
+                } else {
+                    detailsInput.placeholder = 'e.g. Settled in Cash in Hand';
+                }
+            }
+
+            btnCloseModal.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            payoutForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const userId = document.getElementById('payoutUserId').value;
+                const amount = parseFloat(document.getElementById('payoutAmount').value);
+                const method = document.getElementById('payoutMethod').value;
+                const details = document.getElementById('payoutDetails').value;
+
+                try {
+                    const res = await fetch('http://localhost:3000/api/admin/process-payout', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId, amount, method, details })
+                    });
+
+                    if (res.ok) {
+                        modal.classList.remove('active');
+                        showToast('Payout processed & dynamic balance updated!');
+                        loadAdminDeck();
+                    } else {
+                        const err = await res.json();
+                        alert('Error: ' + (err.error || 'Failed to process payout'));
+                    }
+                } catch(ex) {
+                    console.error(ex);
+                    alert('Network error when processing payout');
+                }
+            });
+
+            function showToast(msg) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

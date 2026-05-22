@@ -1,0 +1,413 @@
+{
+  "users": [
+    {
+      "id": "5301358",
+      "email": "test@example.com",
+      "phone": "9876543210",
+      "password": "password123",
+      "name": "Tarun Potturu Verified",
+      "totalProfit": 632.25
+    },
+    {
+      "id": "7935240",
+      "email": "potturutarun.123984@marwadiuniversity.ac.in",
+      "phone": "9381492981",
+      "password": "tharun123",
+      "name": "POTTURU TARUN",
+      "totalProfit": 5
+    },
+    {
+      "id": "4059852",
+      "email": "tester7863@bonus.com",
+      "phone": "999786399",
+      "password": "password123",
+      "name": "Bonus Tester 7863",
+      "totalProfit": 5
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "title": "Apple AirPods Pro (2nd Gen)",
+      "retailer": "Amazon",
+      "category": "Electronics",
+      "originalPrice": 24900,
+      "discountPrice": 19990,
+      "profit": "Upto 5% Profit",
+      "image": "https://m.media-amazon.com/images/I/61SUj2aKoEL._SX679_.jpg",
+      "bgColor": "bg-blue",
+      "badge": "HOT DEAL",
+      "affiliateLink": "https://www.amazon.in/dp/B0BDK6Z6XF?tag=smartbuyhub-21"
+    },
+    {
+      "id": 2,
+      "title": "Samsung 4K Smart TV 55 inch",
+      "retailer": "Flipkart",
+      "category": "Electronics",
+      "originalPrice": 64990,
+      "discountPrice": 42990,
+      "profit": "Flat Rs. 1500 Profit",
+      "image": "https://rukminim2.flixcart.com/image/832/832/xif0q/television/j/2/j/-original-imagtgwzeeb5k4wz.jpeg?q=70",
+      "bgColor": "bg-purple",
+      "badge": "30% OFF",
+      "affiliateLink": "https://www.flipkart.com/televisions/pr?sid=ckf,czl"
+    },
+    {
+      "id": 3,
+      "title": "Tata Sampann Unpolished Toor Dal 1kg",
+      "retailer": "Amazon",
+      "category": "Grocery & Essentials",
+      "originalPrice": 235,
+      "discountPrice": 179,
+      "profit": "Upto 8% Profit",
+      "image": "https://m.media-amazon.com/images/I/71R2o583A8L._SX679_.jpg",
+      "bgColor": "bg-pink",
+      "badge": "ESSENTIALS",
+      "affiliateLink": "https://www.amazon.in/grocery-pantry/b"
+    },
+    {
+      "id": 4,
+      "title": "Men's Solid Slim Fit Formal Shirt",
+      "retailer": "Myntra",
+      "category": "Men's Fashion",
+      "originalPrice": 1999,
+      "discountPrice": 799,
+      "profit": "Flat 12% Profit",
+      "image": "https://assets.myntrasassets.com/h_720,q_90,w_540/v1/assets/images/1700944/2022/3/2/08365d9c-bdff-4cc0-b30f-b0f7dd0f5fa61646215324706-HRX-by-Hrithik-Roshan-Men-Yellow-Printed-Cotton-Pure-Cotton--1.jpg",
+      "bgColor": "bg-blue",
+      "badge": "MIN 60% OFF",
+      "affiliateLink": "https://www.myntra.com/shirts/mens-fashion"
+    },
+    {
+      "id": 5,
+      "title": "Women's High Rise Wide Leg Jeans",
+      "retailer": "Ajio",
+      "category": "Women's Fashion",
+      "originalPrice": 2499,
+      "discountPrice:": 899,
+      "profit": "Flat Rs. 150 Profit",
+      "image": "https://assets.ajio.com/medias/sys_master/root/20230621/jGmb/6492b45042f9e729d75b399d/-473Wx593H-462323940-blue-MODEL.jpg",
+      "bgColor": "bg-purple",
+      "badge": "LOWEST PRICE",
+      "affiliateLink": "https://www.ajio.com/women-jeans/c/830316001"
+    },
+    {
+      "id": 6,
+      "title": "Puma Men's Running Shoes",
+      "retailer": "Flipkart",
+      "category": "Men's Footwear",
+      "originalPrice": 3999,
+      "discountPrice": 1599,
+      "profit": "Flat 8% Profit",
+      "image": "https://rukminim2.flixcart.com/image/832/832/xif0q/shoe/c/m/k/-original-imaghvbzgzd6zph7.jpeg?q=70",
+      "bgColor": "bg-blue",
+      "badge": "60% OFF",
+      "affiliateLink": "https://www.flipkart.com/shoes-store"
+    },
+    {
+      "id": 7,
+      "title": "Catwalk Women's Block Heels",
+      "retailer": "Myntra",
+      "category": "Women's Footwear",
+      "originalPrice": 2995,
+      "discountPrice": 1497,
+      "profit": "Upto 10% Profit",
+      "image": "https://assets.myntrasassets.com/h_720,q_90,w_540/v1/assets/images/11383344/2020/2/12/37ee7635-f480-4573-8a30-008304c40eb11581498114400-Catwalk-Women-Bronze-Toned-Solid-Pumps-8231581498112102-1.jpg",
+      "bgColor": "bg-pink",
+      "badge": "HALF PRICE",
+      "affiliateLink": "https://www.myntra.com/heels"
+    },
+    {
+      "id": 8,
+      "title": "Maybelline New York Fit Me Matte Foundation",
+      "retailer": "Myntra",
+      "category": "Beauty Products",
+      "originalPrice": 649,
+      "discountPrice": 454,
+      "profit": "Upto 6% Profit",
+      "image": "https://assets.myntrasassets.com/h_720,q_90,w_540/v1/assets/images/65757/2023/1/24/7fae5fa7-e317-4ef2-95f0-6c9ab6f8cb521674542289415-Maybelline-New-York-Fit-Me-Matte-Poreless-Liquid-Foundation--1.jpg",
+      "bgColor": "bg-pink",
+      "badge": "30% OFF",
+      "affiliateLink": "https://www.myntra.com/foundation"
+    },
+    {
+      "id": 9,
+      "title": "Dettol Liquid Handwash Refill",
+      "retailer": "Amazon",
+      "category": "Health & Personal Care",
+      "originalPrice": 220,
+      "discountPrice": 185,
+      "profit": "Flat Rs. 10 Profit",
+      "image": "https://m.media-amazon.com/images/I/61L2iI0UthL._SX679_.jpg",
+      "bgColor": "bg-blue",
+      "badge": "ESSENTIALS",
+      "affiliateLink": "https://www.amazon.in/health-personal-care"
+    },
+    {
+      "id": 10,
+      "title": "Himalaya Baby Massage Oil",
+      "retailer": "Flipkart",
+      "category": "Baby Products",
+      "originalPrice": 450,
+      "discountPrice": 380,
+      "profit": "Upto 7% Profit",
+      "image": "https://rukminim2.flixcart.com/image/832/832/j9d3bm80/baby-care-combo/a/m/2/baby-massage-oil-2-x-500ml-himalaya-original-imaez5ghgztf8ygh.jpeg?q=70",
+      "bgColor": "bg-purple",
+      "badge": "BESTSELLER",
+      "affiliateLink": "https://www.flipkart.com/baby-care-store"
+    },
+    {
+      "id": 11,
+      "title": "Philips Air Fryer HD9200/90",
+      "retailer": "Amazon",
+      "category": "Home & Kitchen",
+      "originalPrice": 9995,
+      "discountPrice": 5999,
+      "profit": "Upto 8% Profit",
+      "image": "https://m.media-amazon.com/images/I/61zRo4TzKkL._SX679_.jpg",
+      "bgColor": "bg-blue",
+      "badge": "TOP RATED",
+      "affiliateLink": "https://www.amazon.in/home-kitchen"
+    },
+    {
+      "id": 12,
+      "title": "Today's Exclusive: Noise ColorFit Pro 4",
+      "retailer": "Flipkart",
+      "category": "Today's Exclusive Offers",
+      "originalPrice": 5999,
+      "discountPrice": 1499,
+      "profit": "Upto 10% Profit",
+      "image": "https://rukminim2.flixcart.com/image/832/832/xif0q/smartwatch/y/i/8/-original-imaghg3fbz4zhcgd.jpeg?q=70",
+      "bgColor": "bg-purple",
+      "badge": "STEAL DEAL",
+      "affiliateLink": "https://www.flipkart.com"
+    },
+    {
+      "id": 13,
+      "title": "Sony WH-1000XM4 Wireless Noise Cancelling Headphones",
+      "retailer": "Amazon",
+      "category": "Electronics",
+      "originalPrice": 29990,
+      "discountPrice": 19990,
+      "profit": "Upto 8% Profit",
+      "image": "https://m.media-amazon.com/images/I/71o8Q5h55OL._SX679_.jpg",
+      "bgColor": "bg-blue",
+      "badge": "BESTSELLER",
+      "affiliateLink": "https://www.amazon.in/dp/B08C56GZUA"
+    },
+    {
+      "id": 14,
+      "title": "OnePlus Nord CE 3 Lite 5G (8GB RAM, 128GB)",
+      "retailer": "Amazon",
+      "category": "Electronics",
+      "originalPrice": 19999,
+      "discountPrice": 17499,
+      "profit": "Flat Rs. 350 Profit",
+      "image": "https://m.media-amazon.com/images/I/61QRgYFmpyL._SX679_.jpg",
+      "bgColor": "bg-blue",
+      "badge": "TOP SELLING",
+      "affiliateLink": "https://www.amazon.in/dp/B0BY8MCQ9S"
+    },
+    {
+      "id": 15,
+      "title": "Nike Men's Revolution 6 Road Running Shoes",
+      "retailer": "Myntra",
+      "category": "Men's Fashion",
+      "originalPrice": 3695,
+      "discountPrice": 2956,
+      "profit": "Flat 10% Profit",
+      "image": "https://assets.myntrasassets.com/h_720,q_90,w_540/v1/assets/images/15467332/2021/11/17/0989ee50-4886-4fbf-94f7-873b50cb39891637123985790-Nike-Revolution-6-Next-Nature-Mens-Road-Running-Shoes-91316-1.jpg",
+      "bgColor": "bg-blue",
+      "badge": "MIN 20% OFF",
+      "affiliateLink": "https://www.myntra.com/shoes/nike"
+    },
+    {
+      "id": 16,
+      "title": "Milton Homesteel 3-Tier Lunch Box",
+      "retailer": "Amazon",
+      "category": "Home & Kitchen",
+      "originalPrice": 1450,
+      "discountPrice": 999,
+      "profit": "Flat Rs. 80 Profit",
+      "image": "https://m.media-amazon.com/images/I/71N7eD-eZ+L._SX679_.jpg",
+      "bgColor": "bg-pink",
+      "badge": "HOUSEHOLD",
+      "affiliateLink": "https://www.amazon.in/milton-lunch-box"
+    },
+    {
+      "id": 17,
+      "title": "L'Oreal Paris Extraordinary Hair Serum",
+      "retailer": "Ajio",
+      "category": "Beauty Products",
+      "originalPrice": 649,
+      "discountPrice": 499,
+      "profit": "Upto 12% Profit",
+      "image": "https://assets.ajio.com/medias/sys_master/root/20230602/B6iF/6479a957d55b7d0c634db847/-473Wx593H-465451996-multi-MODEL.jpg",
+      "bgColor": "bg-purple",
+      "badge": "HOT DEAL",
+      "affiliateLink": "https://www.ajio.com/loreal-hair-serum"
+    },
+    {
+      "id": 18,
+      "title": "Pigeon Amaze Plus 1.5L Electric Kettle",
+      "retailer": "Amazon",
+      "category": "Home & Kitchen",
+      "originalPrice": 1195,
+      "discountPrice": 649,
+      "profit": "Flat Rs. 50 Profit",
+      "image": "https://m.media-amazon.com/images/I/51DF6-VvnSL._SX679_.jpg",
+      "bgColor": "bg-pink",
+      "badge": "45% OFF",
+      "affiliateLink": "https://www.amazon.in/dp/B07WMS7TWB"
+    },
+    {
+      "id": 19,
+      "title": "Biotique Morning Nectar Lotion 190ml",
+      "retailer": "Myntra",
+      "category": "Beauty Products",
+      "originalPrice": 220,
+      "discountPrice": 165,
+      "profit": "Flat 15% Profit",
+      "image": "https://assets.myntrasassets.com/h_720,q_90,w_540/v1/assets/images/22345/2022/11/24/3b85d38b-d50d-45db-95b8-5f25bf15eb271669280979603-Biotique-Morning-Nectar-Visibly-Flawless-Skin-Nourishing-Lot-1.jpg",
+      "bgColor": "bg-pink",
+      "badge": "NATURAL",
+      "affiliateLink": "https://www.myntra.com/biotique"
+    },
+    {
+      "id": 20,
+      "title": "Boat Stone 350 Portable Speaker",
+      "retailer": "Flipkart",
+      "category": "Electronics",
+      "originalPrice": 3490,
+      "discountPrice": 1299,
+      "profit": "Upto 10% Profit",
+      "image": "https://rukminim2.flixcart.com/image/832/832/kklh68w0/speaker/mobile-tablet-speaker/u/q/q/stone-350-boat-original-imafzxfx8yyg4zdy.jpeg?q=70",
+      "bgColor": "bg-purple",
+      "badge": "TOP RATED",
+      "affiliateLink": "https://www.flipkart.com/boat-speaker-stone-350"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD59315",
+      "userId": "5301358",
+      "retailer": "Flipkart",
+      "date": "2026-05-22",
+      "amount": 11670,
+      "profit": 602.25,
+      "status": "Confirmed"
+    },
+    {
+      "id": "ORD91823",
+      "userId": "5301358",
+      "retailer": "Amazon",
+      "date": "2026-05-15",
+      "amount": 12000,
+      "profit": 15,
+      "status": "Confirmed"
+    },
+    {
+      "id": "ORD91824",
+      "userId": "5301358",
+      "retailer": "Flipkart",
+      "date": "2026-05-18",
+      "amount": 1500,
+      "profit": 15,
+      "status": "Pending"
+    },
+    {
+      "id": "ORD91825",
+      "userId": "5301358",
+      "retailer": "Myntra",
+      "date": "2026-05-20",
+      "amount": 799,
+      "profit": 10,
+      "status": "Pending"
+    }
+  ],
+  "payments": [
+    {
+      "id": "TXN72680",
+      "userId": "5301358",
+      "amount": 602.25,
+      "date": "2026-05-22",
+      "method": "Affiliate Commission (Flipkart)",
+      "status": "Transferred",
+      "utr": "CTR169974560908"
+    },
+    {
+      "id": "TXN40129",
+      "userId": "5301358",
+      "amount": 50,
+      "date": "2026-04-10",
+      "method": "UPI (tarun@ybl)",
+      "status": "Transferred",
+      "utr": "UTR928340129384"
+    },
+    {
+      "id": "TXN40130",
+      "userId": "5301358",
+      "amount": 25,
+      "date": "2026-05-01",
+      "method": "Bank Transfer",
+      "status": "Transferred",
+      "utr": "UTR102938475620"
+    }
+  ],
+  "clicks": [
+    {
+      "id": "CLK001",
+      "userId": "5301358",
+      "url": "https://www.amazon.in/dp/B0BDK6Z6XF?tag=smartbuyhub-21",
+      "title": "Apple AirPods Pro (2nd Gen)",
+      "retailer": "Amazon",
+      "clicks": 45,
+      "earnings": 15
+    },
+    {
+      "id": "CLK002",
+      "userId": "5301358",
+      "url": "https://www.flipkart.com/televisions/pr?sid=ckf,czl",
+      "title": "Samsung 4K Smart TV 55 inch",
+      "retailer": "Flipkart",
+      "clicks": 79,
+      "earnings": 15
+    },
+    {
+      "id": "CLK85409",
+      "userId": "5301358",
+      "url": "https://www.amazon.in/dp/B00WATCH",
+      "title": "Apple Watch Super Deal",
+      "retailer": "Amazon",
+      "clicks": 1,
+      "earnings": 0
+    },
+    {
+      "id": "CLK17575",
+      "userId": "5301358",
+      "url": "https://www.flipkart.com/televisions/pr?sid=ckf,czl",
+      "title": "Samsung Smart TV Test Link",
+      "retailer": "Flipkart",
+      "clicks": 2,
+      "earnings": 602.25
+    }
+  ],
+  "referrals": [
+    {
+      "id": "REF001",
+      "userId": "5301358",
+      "referredUserId": "9283471",
+      "name": "Kiran Kumar",
+      "dateJoined": "2026-05-05",
+      "earningsContribution": 20
+    },
+    {
+      "id": "REF002",
+      "userId": "5301358",
+      "referredUserId": "8472910",
+      "name": "Suresh Raina",
+      "dateJoined": "2026-05-10",
+      "earningsContribution": 30
+    }
+  ]
+}

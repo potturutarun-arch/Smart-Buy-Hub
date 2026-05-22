@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Earnings - SmartBuyHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e6c46; /* Deep green */
+            --primary-light: #469b61; /* Lighter green for header boxes */
+            --primary-gradient: linear-gradient(135deg, #1e6c46 0%, #469b61 100%);
+            --bg-color: #e5e7eb; /* Soft gray background like screenshot */
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --accent-pink: #f87171; /* Pink circle button color */
+            --accent-pink-hover: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Navbar */
+        .navbar { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; }
+        .nav-right { display: flex; gap: 1.5rem; align-items: center; font-weight: 500; }
+        .nav-right a { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: opacity 0.2s; }
+        .nav-right a:hover { opacity: 0.8; }
+
+        /* Header Gradient Banner */
+        .header-banner {
+            background: var(--primary-gradient);
+            padding: 1.5rem 2rem 5rem 2rem;
+            color: white;
+        }
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .breadcrumbs {
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .breadcrumbs a:hover {
+            color: white;
+        }
+        .breadcrumbs span {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Total Earnings Card */
+        .earnings-card-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: -4rem auto 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+        .earnings-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            padding: 2rem 2.5rem;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+        .earnings-label-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #4b5563;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        .info-icon {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            cursor: pointer;
+            position: relative;
+        }
+        .info-icon:hover::after {
+            content: "Earnings confirmed and pending from affiliate orders.";
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            z-index: 100;
+        }
+
+        .earnings-amount-wrap {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .earnings-amount {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        .explore-link {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: color 0.2s, transform 0.2s;
+        }
+        .explore-link:hover {
+            color: #059669;
+            transform: translateX(3px);
+        }
+
+        .wallet-btn {
+            position: absolute;
+            right: 2.5rem;
+            top: 2rem;
+            width: 54px;
+            height: 54px;
+            background: #fee2e2;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--accent-pink-hover);
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.15);
+            transition: transform 0.2s, background-color 0.2s, color 0.2s;
+            border: 1px solid rgba(239, 68, 68, 0.1);
+        }
+        .wallet-btn:hover {
+            transform: scale(1.08);
+            background: var(--accent-pink-hover);
+            color: white;
+        }
+
+        .card-divider {
+            border: none;
+            border-bottom: 1px dashed #e5e7eb;
+            margin: 1.5rem 0;
+        }
+
+        .card-footer-text {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        /* 4 Button Action Grid */
+        .action-grid-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto 4rem auto;
+            padding: 0 1.5rem;
+        }
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        
+        .action-box {
+            background: linear-gradient(135deg, #469b61 0%, #2e7d4d 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+            box-shadow: 0 4px 15px rgba(30, 108, 70, 0.15);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .action-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            transform: translate(-30%, -30%);
+            pointer-events: none;
+        }
+        .action-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(30, 108, 70, 0.3);
+        }
+
+        .action-icon-circle {
+            width: 44px;
+            height: 44px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.15rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .icon-orders { color: #f87171; }
+        .icon-reports { color: #ef4444; }
+        .icon-payment { color: #f87171; }
+        .icon-help { color: #f87171; }
+
+        .action-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.01em;
+        }
+
+        .action-divider {
+            border: none;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+            margin-bottom: 0.75rem;
+        }
+
+        .action-link {
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            opacity: 0.9;
+            transition: opacity 0.2s, gap 0.2s;
+        }
+        .action-box:hover .action-link {
+            opacity: 1;
+            gap: 0.5rem;
+        }
+
+        /* Dark Premium Footer */
+        .footer-wrap {
+            background: #222222;
+            color: #9ca3af;
+            padding: 3rem 2rem 2rem 2rem;
+            margin-top: auto;
+            border-top: 4px solid var(--primary);
+        }
+        .footer-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
+        }
+        .footer-col h4 {
+            color: #4ade80; /* Vibrant green for footer headings */
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 0.75rem;
+        }
+        .footer-col ul li a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.2s, padding-left 0.2s;
+            display: inline-block;
+        }
+        .footer-col ul li a:hover {
+            color: white;
+            padding-left: 4px;
+        }
+        .footer-col ul li a::before {
+            content: '›';
+            margin-right: 0.5rem;
+            color: var(--primary-light);
+            font-weight: bold;
+        }
+
+        /* CSS Designed Google Play Button */
+        .playstore-btn {
+            background: #000000;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+            text-decoration: none;
+            width: fit-content;
+            margin-top: 0.5rem;
+            transition: border-color 0.2s, background 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .playstore-btn:hover {
+            border-color: #4b5563;
+            background: #111827;
+        }
+        .playstore-btn i {
+            font-size: 1.75rem;
+            color: #3b82f6; /* Android Blue */
+        }
+        .btn-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        .text-top {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: #9ca3af;
+        }
+        .text-bottom {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .footer-bottom {
+            max-width: 1000px;
+            margin: 2.5rem auto 0 auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid #374151;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 968px) {
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.25rem;
+            }
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 576px) {
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            .earnings-card {
+                padding: 1.5rem;
+            }
+            .wallet-btn {
+                position: static;
+                margin-top: 1rem;
+            }
+            .earnings-amount {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-bag-shopping"></i> SmartBuyHub
+        </a>
+        <div class="nav-right">
+            <a href="profile.html"><i class="fa-solid fa-user"></i> <span id="navProfileName">My Profile</span></a>
+        </div>
+    </nav>
+
+    <!-- Header Gradient Banner -->
+    <div class="header-banner">
+        <div class="header-content">
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <a href="profile.html">Profile</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <span>My Earnings</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Earnings Card -->
+    <div class="earnings-card-container">
+        <div class="earnings-card">
+            <div class="earnings-label-wrap">
+                <span>Total Earnings</span>
+                <i class="fa-solid fa-circle-question info-icon" title="Earnings confirmed and pending from affiliate orders"></i>
+            </div>
+            <div class="earnings-amount-wrap">
+                <span class="earnings-amount">₹<span id="earningsValue">30.00</span></span>
+                <a href="reports.html" class="explore-link">Explore <i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+
+            <hr class="card-divider">
+
+            <div class="card-footer-text">
+                Profit will appear here within 72 hours of order being placed
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Grid -->
+    <div class="action-grid-container">
+        <div class="action-grid">
+            <!-- Order Details -->
+            <a href="orders.html" class="action-box">
+                <div>
+                    <div class="action-icon-circle">
+                        <i class="fa-solid fa-clipboard-list icon-orders"></i>
+                    </div>
+                    <h3 class="action-title">Order Details</h3>
+                </div>
+                <div>
+                    <hr class="action-divider">
+                    <div class="action-link">View More <i class="fa-solid fa-chevron-right"></i></div>
+                </div>
+            </a>
+
+            <!-- Reports -->
+            <a href="reports.html" class="action-box">
+                <div>
+                    <div class="action-icon-circle">
+                        <i class="fa-solid fa-chart-line icon-reports"></i>
+                    </div>
+                    <h3 class="action-title">Reports</h3>
+                </div>
+                <div>
+                    <hr class="action-divider">
+                    <div class="action-link">Know More <i class="fa-solid fa-chevron-right"></i></div>
+                </div>
+            </a>
+
+            <!-- Refer & Earn -->
+            <a href="refer-earn.html" class="action-box">
+                <div>
+                    <div class="action-icon-circle">
+                        <i class="fa-solid fa-user-plus icon-payment"></i>
+                    </div>
+                    <h3 class="action-title">Refer & Earn</h3>
+                </div>
+                <div>
+                    <hr class="action-divider">
+                    <div class="action-link">Invite Friends <i class="fa-solid fa-chevron-right"></i></div>
+                </div>
+            </a>
+
+            <!-- Get Help -->
+            <a href="help.html" class="action-box">
+                <div>
+                    <div class="action-icon-circle">
+                        <i class="fa-solid fa-headset icon-help"></i>
+                    </div>
+                    <h3 class="action-title">Get Help</h3>
+                </div>
+                <div>
+                    <hr class="action-divider">
+                    <div class="action-link">Learn More <i class="fa-solid fa-chevron-right"></i></div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-wrap">
+        <div class="footer-container">
+            <!-- Col 1 -->
+            <div class="footer-col">
+                <h4>About SmartBuyHub</h4>
+                <ul>
+                    <li><a href="help.html#about">About Us</a></li>
+                    <li><a href="help.html#blog">Blog</a></li>
+                    <li><a href="help.html">FAQs</a></li>
+                </ul>
+            </div>
+            <!-- Col 2 -->
+            <div class="footer-col">
+                <h4>Useful Reads</h4>
+                <ul>
+                    <li><a href="help.html#terms">Terms and Conditions</a></li>
+                    <li><a href="help.html#privacy">Privacy & Cookie Policy</a></li>
+                    <li><a href="help.html#anti-spam">Anti-Spam Policy</a></li>
+                </ul>
+            </div>
+            <!-- Col 3 -->
+            <div class="footer-col">
+                <h4>Connect With Us</h4>
+                <ul>
+                    <li><a href="help.html">Get Help</a></li>
+                    <li><a href="https://t.me/smartbuyhub" target="_blank">Telegram</a></li>
+                    <li><a href="https://youtube.com/smartbuyhub" target="_blank">YouTube</a></li>
+                    <li><a href="https://instagram.com/smartbuyhub" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
+            <!-- Col 4 -->
+            <div class="footer-col">
+                <h4>Download App</h4>
+                <a href="https://play.google.com/store" target="_blank" class="playstore-btn">
+                    <i class="fa-brands fa-google-play"></i>
+                    <div class="btn-text">
+                        <span class="text-top">Get it on</span>
+                        <span class="text-bottom">Google Play</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 SmartBuyHub. All rights reserved. Built with premium design.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+
+            if (!token || !userId) {
+                // Not logged in, redirect to login
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Fetch live profile information
+                const res = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                if (res.ok) {
+                    const userData = await res.json();
+                    
+                    // Update earnings and profile name dynamically
+                    document.getElementById('earningsValue').textContent = parseFloat(userData.totalProfit).toFixed(2);
+                    document.getElementById('navProfileName').textContent = userData.name;
+                } else {
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                }
+            } catch (err) {
+                console.error("Failed to load earnings profile", err);
+                // Fallback to local storage or mock values if server is offline
+                document.getElementById('earningsValue').textContent = '30.00';
+            }
+        });
+    </script>
+</body>
+</html>

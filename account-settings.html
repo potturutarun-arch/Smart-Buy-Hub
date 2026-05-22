@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings - SmartBuyHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e6c46;
+            --primary-light: #469b61;
+            --primary-gradient: linear-gradient(135deg, #1e6c46 0%, #469b61 100%);
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --accent-emerald: #10b981;
+            --accent-red: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Navbar */
+        .navbar { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; }
+        .nav-right a { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; }
+
+        /* Header Gradient Banner */
+        .header-banner {
+            background: var(--primary-gradient);
+            padding: 1.5rem 2rem 5rem 2rem;
+            color: white;
+        }
+        .header-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .breadcrumbs {
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+        .breadcrumbs span {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Container */
+        .main-container {
+            max-width: 600px;
+            width: 100%;
+            margin: -4rem auto 4rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Card styles */
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .input-wrap {
+            position: relative;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(70, 155, 97, 0.15);
+        }
+        .form-input:disabled {
+            background-color: #f3f4f6;
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0.85rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 10px rgba(30, 108, 70, 0.2);
+        }
+        .btn-submit:hover {
+            opacity: 0.95;
+        }
+
+        /* Banners */
+        .alert-banner {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 1.25rem;
+            display: none;
+            font-weight: 500;
+        }
+        .alert-error {
+            background-color: #fef2f2;
+            color: var(--accent-red);
+            border: 1px solid #fee2e2;
+        }
+        .alert-success {
+            background-color: #f0fdf4;
+            color: var(--accent-emerald);
+            border: 1px solid #d1fae5;
+        }
+
+        /* Footer */
+        .footer-wrap {
+            background: #222222;
+            color: #9ca3af;
+            padding: 3rem 2rem 2rem 2rem;
+            margin-top: auto;
+            border-top: 4px solid var(--primary);
+        }
+        .footer-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
+        }
+        .footer-col h4 {
+            color: #4ade80;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.75rem; }
+        .footer-col ul li a { color: #9ca3af; text-decoration: none; font-size: 0.88rem; }
+        .footer-col ul li a:hover { color: white; }
+        .playstore-btn {
+            background: #000000; border: 1px solid #374151; border-radius: 8px; padding: 0.5rem 1rem;
+            display: inline-flex; align-items: center; gap: 0.75rem; color: white; text-decoration: none; width: fit-content;
+        }
+        .playstore-btn i { font-size: 1.75rem; color: #3b82f6; }
+        .btn-text { display: flex; flex-direction: column; line-height: 1.2; }
+        .text-top { font-size: 0.65rem; text-transform: uppercase; color: #9ca3af; }
+        .text-bottom { font-size: 0.95rem; font-weight: 700; }
+        .footer-bottom {
+            max-width: 1000px; margin: 2.5rem auto 0 auto; padding-top: 1.5rem; border-top: 1px solid #374151;
+            text-align: center; font-size: 0.8rem; color: #6b7280;
+        }
+
+        /* Responsive */
+        @media(max-width: 768px) {
+            .footer-container { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media(max-width: 480px) {
+            .footer-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-bag-shopping"></i> SmartBuyHub
+        </a>
+        <div class="nav-right">
+            <a href="profile.html"><i class="fa-solid fa-user"></i> <span id="navProfileName">My Profile</span></a>
+        </div>
+    </nav>
+
+    <!-- Header Gradient Banner -->
+    <div class="header-banner">
+        <div class="header-content">
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <a href="profile.html">Profile</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <span>Account Settings</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container -->
+    <div class="main-container">
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa-solid fa-gears" style="color: var(--primary);"></i> Account Settings
+                </h3>
+            </div>
+
+            <!-- Banners -->
+            <div class="alert-banner alert-error" id="errorBanner"></div>
+            <div class="alert-banner alert-success" id="successBanner"></div>
+
+            <form id="profileForm">
+                <div class="form-group">
+                    <label class="form-label" for="userIdField">User ID (Read Only)</label>
+                    <div class="input-wrap">
+                        <input type="text" class="form-input" id="userIdField" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="profileName">Full Name</label>
+                    <div class="input-wrap">
+                        <input type="text" class="form-input" id="profileName" required placeholder="Enter full name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="profileEmail">Email Address</label>
+                    <div class="input-wrap">
+                        <input type="email" class="form-input" id="profileEmail" required placeholder="Enter email address">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="profilePhone">Phone Number</label>
+                    <div class="input-wrap">
+                        <input type="tel" class="form-input" id="profilePhone" required placeholder="Enter 10-digit phone number" pattern="[0-9]{10}">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-wrap">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>About SmartBuyHub</h4>
+                <ul>
+                    <li><a href="help.html#about">About Us</a></li>
+                    <li><a href="help.html#blog">Blog</a></li>
+                    <li><a href="help.html">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Useful Reads</h4>
+                <ul>
+                    <li><a href="help.html#terms">Terms and Conditions</a></li>
+                    <li><a href="help.html#privacy">Privacy & Cookie Policy</a></li>
+                    <li><a href="help.html#anti-spam">Anti-Spam Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect With Us</h4>
+                <ul>
+                    <li><a href="help.html">Get Help</a></li>
+                    <li><a href="https://t.me/smartbuyhub" target="_blank">Telegram</a></li>
+                    <li><a href="https://youtube.com/smartbuyhub" target="_blank">YouTube</a></li>
+                    <li><a href="https://instagram.com/smartbuyhub" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Download App</h4>
+                <a href="https://play.google.com/store" target="_blank" class="playstore-btn">
+                    <i class="fa-brands fa-google-play"></i>
+                    <div class="btn-text">
+                        <span class="text-top">Get it on</span>
+                        <span class="text-bottom">Google Play</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 SmartBuyHub. All rights reserved. Built with premium design.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+
+            if (!token || !userId) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const profileForm = document.getElementById('profileForm');
+            const errorBanner = document.getElementById('errorBanner');
+            const successBanner = document.getElementById('successBanner');
+
+            // 1. Fetch current profile data
+            try {
+                const res = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                if (res.ok) {
+                    const userData = await res.json();
+                    
+                    // Fill inputs
+                    document.getElementById('navProfileName').textContent = userData.name;
+                    document.getElementById('userIdField').value = userData.id;
+                    document.getElementById('profileName').value = userData.name;
+                    document.getElementById('profileEmail').value = userData.email;
+                    document.getElementById('profilePhone').value = userData.phone;
+                } else {
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                }
+            } catch (err) {
+                console.error(err);
+                showError('Failed to fetch profile details from backend.');
+            }
+
+            // 2. Handle form submission
+            profileForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorBanner.style.display = 'none';
+                successBanner.style.display = 'none';
+
+                const name = document.getElementById('profileName').value.trim();
+                const email = document.getElementById('profileEmail').value.trim();
+                const phone = document.getElementById('profilePhone').value.trim();
+
+                if (!name || !email || !phone) {
+                    showError('All fields are required.');
+                    return;
+                }
+
+                if (phone.length !== 10 || isNaN(phone)) {
+                    showError('Phone number must be a valid 10-digit number.');
+                    return;
+                }
+
+                try {
+                    const res = await fetch('http://localhost:3000/api/user/update-profile', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId, name, email, phone })
+                    });
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        showSuccess('Profile details updated successfully!');
+                        document.getElementById('navProfileName').textContent = data.user.name;
+                    } else {
+                        const err = await res.json();
+                        showError(err.error || 'Failed to update profile.');
+                    }
+                } catch (ex) {
+                    console.error(ex);
+                    showError('Network error occurred. Please check backend status.');
+                }
+            });
+
+            function showError(msg) {
+                errorBanner.textContent = msg;
+                errorBanner.style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            function showSuccess(msg) {
+                successBanner.textContent = msg;
+                successBanner.style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>

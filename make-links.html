@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Affiliate Links - SmartBuyHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e6c46;
+            --primary-light: #469b61;
+            --primary-gradient: linear-gradient(135deg, #1e6c46 0%, #469b61 100%);
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --accent-emerald: #10b981;
+            --accent-red: #ef4444;
+            --accent-blue: #0088cc;
+            --accent-green: #25d366;
+            --accent-black: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Navbar */
+        .navbar { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; }
+        .nav-right a { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; }
+
+        /* Header Gradient Banner */
+        .header-banner {
+            background: var(--primary-gradient);
+            padding: 1.5rem 2rem 5.5rem 2rem;
+            color: white;
+        }
+        .header-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .breadcrumbs {
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+        .breadcrumbs span {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Container */
+        .main-container {
+            max-width: 700px;
+            width: 100%;
+            margin: -4.5rem auto 4rem auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Card styles */
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .input-wrap {
+            position: relative;
+        }
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: white;
+            color: var(--text-dark);
+            outline: none;
+        }
+        .form-input:focus, .form-select:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(70, 155, 97, 0.15);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0.85rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            box-shadow: 0 4px 10px rgba(30, 108, 70, 0.2);
+        }
+        .btn-submit:hover {
+            opacity: 0.95;
+        }
+
+        /* Alert Banners */
+        .alert-banner {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 1.25rem;
+            display: none;
+            font-weight: 500;
+        }
+        .alert-error {
+            background-color: #fef2f2;
+            color: var(--accent-red);
+            border: 1px solid #fee2e2;
+        }
+
+        /* Converted Output Card */
+        .result-card {
+            display: none; /* Initially hidden */
+            border: 1px solid #d1fae5;
+            background-color: #f0fdf4;
+            animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .result-title {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .result-desc {
+            font-size: 0.88rem;
+            color: #374151;
+            margin-bottom: 1.25rem;
+        }
+        .copy-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .copy-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #a7f3d0;
+            border-radius: 8px;
+            background-color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+            outline: none;
+        }
+        .btn-copy {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-copy:hover {
+            opacity: 0.9;
+        }
+
+        /* Social Share Deck */
+        .share-header {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #047857;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+        .share-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+        .share-btn {
+            border: none;
+            padding: 0.65rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: transform 0.2s, opacity 0.2s;
+            text-decoration: none;
+        }
+        .share-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+        .share-telegram { background: linear-gradient(135deg, #0088cc 0%, #24a1de 100%); }
+        .share-whatsapp { background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); }
+        .share-twitter { background: #111827; }
+        .share-email { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); }
+
+        /* Toast notification */
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: #111827; color: white; padding: 0.75rem 1.5rem; border-radius: 50px;
+            font-size: 0.88rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 2000;
+            font-weight: 500;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        .footer-wrap {
+            background: #222222;
+            color: #9ca3af;
+            padding: 3rem 2rem 2rem 2rem;
+            margin-top: auto;
+            border-top: 4px solid var(--primary);
+        }
+        .footer-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
+        }
+        .footer-col h4 {
+            color: #4ade80;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.75rem; }
+        .footer-col ul li a { color: #9ca3af; text-decoration: none; font-size: 0.88rem; }
+        .footer-col ul li a:hover { color: white; }
+        .playstore-btn {
+            background: #000000; border: 1px solid #374151; border-radius: 8px; padding: 0.5rem 1rem;
+            display: inline-flex; align-items: center; gap: 0.75rem; color: white; text-decoration: none; width: fit-content;
+        }
+        .playstore-btn i { font-size: 1.75rem; color: #3b82f6; }
+        .btn-text { display: flex; flex-direction: column; line-height: 1.2; }
+        .text-top { font-size: 0.65rem; text-transform: uppercase; color: #9ca3af; }
+        .text-bottom { font-size: 0.95rem; font-weight: 700; }
+        .footer-bottom {
+            max-width: 1000px; margin: 2.5rem auto 0 auto; padding-top: 1.5rem; border-top: 1px solid #374151;
+            text-align: center; font-size: 0.8rem; color: #6b7280;
+        }
+
+        /* Responsive Breakpoints */
+        @media(max-width: 768px) {
+            .footer-container { grid-template-columns: repeat(2, 1fr); }
+            .share-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media(max-width: 480px) {
+            .footer-container { grid-template-columns: 1fr; }
+            .share-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-bag-shopping"></i> SmartBuyHub
+        </a>
+        <div class="nav-right">
+            <a href="profile.html"><i class="fa-solid fa-user"></i> <span id="navProfileName">My Profile</span></a>
+        </div>
+    </nav>
+
+    <!-- Header Gradient Banner -->
+    <div class="header-banner">
+        <div class="header-content">
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <a href="profile.html">Profile</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <span>Make Affiliate Links</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container -->
+    <div class="main-container">
+        <!-- 1. Link Conversion Form Card -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa-solid fa-link" style="color: var(--primary);"></i> Smart Link Converter
+                </h3>
+            </div>
+
+            <div class="alert-banner alert-error" id="errorBanner"></div>
+
+            <form id="linkMakerForm">
+                <div class="form-group">
+                    <label class="form-label" for="targetUrl">Product Page URL</label>
+                    <div class="input-wrap">
+                        <input type="url" class="form-input" id="targetUrl" required placeholder="Paste Amazon, Flipkart, Myntra, or Ajio URL here...">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="linkTitle">Offer / Link Title</label>
+                    <div class="input-wrap">
+                        <input type="text" class="form-input" id="linkTitle" required placeholder="e.g. Apple AirPods Pro (Hot Deal)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="retailerSelect">Retailer / Brand</label>
+                    <div class="input-wrap">
+                        <select class="form-select" id="retailerSelect" required>
+                            <option value="" disabled selected>Select Retailer</option>
+                            <option value="Amazon">Amazon</option>
+                            <option value="Flipkart">Flipkart</option>
+                            <option value="Myntra">Myntra</option>
+                            <option value="Ajio">Ajio</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Convert to Smart Link</button>
+            </form>
+        </div>
+
+        <!-- 2. Smart Link Output Card (Dynamic) -->
+        <div class="dashboard-card result-card" id="resultCard">
+            <div class="result-title">
+                <i class="fa-solid fa-circle-check"></i> Smart Link Generated!
+            </div>
+            <p class="result-desc">
+                Your personalized tracking affiliate link is ready. Every click and sale through this link registers immediately in your reports dashboard!
+            </p>
+
+            <div class="copy-group">
+                <input type="text" class="copy-input" id="resultUrlField" readonly>
+                <button class="btn-copy" id="copyUrlBtn">
+                    <i class="fa-regular fa-copy"></i> Copy Link
+                </button>
+            </div>
+
+            <div class="share-header">Share Link To Social Channels</div>
+            <div class="share-grid">
+                <a href="#" target="_blank" class="share-btn share-telegram" id="shareTelegramBtn">
+                    <i class="fa-brands fa-telegram"></i> Telegram
+                </a>
+                <a href="#" target="_blank" class="share-btn share-whatsapp" id="shareWhatsappBtn">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="#" target="_blank" class="share-btn share-twitter" id="shareTwitterBtn">
+                    <i class="fa-brands fa-x-twitter"></i> Twitter
+                </a>
+                <a href="#" class="share-btn share-email" id="shareEmailBtn">
+                    <i class="fa-solid fa-envelope"></i> Email
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Link copied to clipboard!</div>
+
+    <!-- Footer -->
+    <footer class="footer-wrap">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>About SmartBuyHub</h4>
+                <ul>
+                    <li><a href="help.html#about">About Us</a></li>
+                    <li><a href="help.html#blog">Blog</a></li>
+                    <li><a href="help.html">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Useful Reads</h4>
+                <ul>
+                    <li><a href="help.html#terms">Terms and Conditions</a></li>
+                    <li><a href="help.html#privacy">Privacy & Cookie Policy</a></li>
+                    <li><a href="help.html#anti-spam">Anti-Spam Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect With Us</h4>
+                <ul>
+                    <li><a href="help.html">Get Help</a></li>
+                    <li><a href="https://t.me/smartbuyhub" target="_blank">Telegram</a></li>
+                    <li><a href="https://youtube.com/smartbuyhub" target="_blank">YouTube</a></li>
+                    <li><a href="https://instagram.com/smartbuyhub" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Download App</h4>
+                <a href="https://play.google.com/store" target="_blank" class="playstore-btn">
+                    <i class="fa-brands fa-google-play"></i>
+                    <div class="btn-text">
+                        <span class="text-top">Get it on</span>
+                        <span class="text-bottom">Google Play</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 SmartBuyHub. All rights reserved. Built with premium design.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+
+            if (!token || !userId) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const errorBanner = document.getElementById('errorBanner');
+            const linkMakerForm = document.getElementById('linkMakerForm');
+            const targetUrlInput = document.getElementById('targetUrl');
+            const retailerSelect = document.getElementById('retailerSelect');
+            
+            const resultCard = document.getElementById('resultCard');
+            const resultUrlField = document.getElementById('resultUrlField');
+            const copyUrlBtn = document.getElementById('copyUrlBtn');
+
+            // Fetch live profile details for navbar name
+            try {
+                const pRes = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                if (pRes.ok) {
+                    const userData = await pRes.json();
+                    document.getElementById('navProfileName').textContent = userData.name;
+                }
+            } catch(e) { console.error(e); }
+
+            // 1. Premium Brand Auto-Detection via Regex
+            targetUrlInput.addEventListener('input', (e) => {
+                const url = e.target.value.toLowerCase();
+                if (url.includes('amazon.')) {
+                    retailerSelect.value = 'Amazon';
+                } else if (url.includes('flipkart.')) {
+                    retailerSelect.value = 'Flipkart';
+                } else if (url.includes('myntra.')) {
+                    retailerSelect.value = 'Myntra';
+                } else if (url.includes('ajio.')) {
+                    retailerSelect.value = 'Ajio';
+                }
+            });
+
+            // 2. Submit Link Conversion Form
+            linkMakerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorBanner.style.display = 'none';
+                resultCard.style.display = 'none';
+
+                const url = targetUrlInput.value.trim();
+                const title = document.getElementById('linkTitle').value.trim();
+                const retailer = retailerSelect.value;
+
+                if (!url || !title || !retailer) {
+                    showError('Please fill out all fields.');
+                    return;
+                }
+
+                try {
+                    const res = await fetch('http://localhost:3000/api/user/create-link', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId, url, title, retailer })
+                    });
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        
+                        // Construct personalized short tracking link
+                        const smartLink = `${window.location.origin}/link/${data.link.id}`;
+                        resultUrlField.value = smartLink;
+                        
+                        // Update Social Sharing overlays
+                        const encLink = encodeURIComponent(smartLink);
+                        const encTitle = encodeURIComponent(title + " - SmartBuyHub Deal!");
+
+                        document.getElementById('shareTelegramBtn').href = `https://t.me/share/url?url=${encLink}&text=${encTitle}`;
+                        document.getElementById('shareWhatsappBtn').href = `https://api.whatsapp.com/send?text=${encTitle}%20${encLink}`;
+                        document.getElementById('shareTwitterBtn').href = `https://twitter.com/intent/tweet?url=${encLink}&text=${encTitle}`;
+                        document.getElementById('shareEmailBtn').href = `mailto:?subject=${encTitle}&body=Check out this link: ${encLink}`;
+
+                        // Reveal result box
+                        resultCard.style.display = 'block';
+                        resultCard.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        const err = await res.json();
+                        showError(err.error || 'Failed to create tracking link.');
+                    }
+                } catch (ex) {
+                    console.error(ex);
+                    showError('Network error occurred. Please verify backend state.');
+                }
+            });
+
+            // 3. Copier logic
+            copyUrlBtn.addEventListener('click', () => {
+                const textToCopy = resultUrlField.value;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showToast('Smart Link copied to clipboard!');
+                }).catch(err => {
+                    console.error('Could not copy text: ', err);
+                });
+            });
+
+            const toast = document.getElementById('toast');
+            let toastTimeout;
+            function showToast(msg) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            }
+
+            function showError(msg) {
+                errorBanner.textContent = msg;
+                errorBanner.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

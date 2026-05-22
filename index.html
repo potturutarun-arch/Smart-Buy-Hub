@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBuyHub - Today's Best Deals & Affiliate Earnings</title>
+    <meta name="description" content="Find the best deals, shop online, and earn commission with SmartBuyHub.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Overlay for Drawer -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+
+    <!-- Category Drawer -->
+    <div class="category-drawer" id="categoryDrawer">
+        <div class="drawer-header">
+            <h3>CATEGORY</h3>
+            <button class="close-drawer" id="closeDrawerBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <ul class="drawer-menu" id="drawerMenuList">
+            <li data-category="Today's Exclusive Offers">
+                <i class="fa-solid fa-award"></i> Today's Exclusive Offers
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+            <li data-category="Retailer Category">
+                <i class="fa-solid fa-clipboard-list"></i> Retailer Category
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+            <li data-category="Electronics">
+                <i class="fa-solid fa-plug"></i> Electronics
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+            <li data-category="Grocery & Essentials">
+                <i class="fa-solid fa-basket-shopping"></i> Grocery & Essentials
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+            <li data-category="Men's Fashion">
+                <i class="fa-solid fa-shirt"></i> Men's Fashion
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+            <li data-category="Women's Fashion">
+                <i class="fa-solid fa-person-dress"></i> Women's Fashion
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+            <li data-category="Men's Footwear">
+                <i class="fa-solid fa-shoe-prints"></i> Men's Footwear
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+            <li data-category="Women's Footwear">
+                <i class="fa-solid fa-shoe-prints" style="color: pink;"></i> Women's Footwear
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+            <li data-category="Beauty Products">
+                <i class="fa-solid fa-pump-soap"></i> Beauty Products
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+            <li data-category="Health & Personal Care">
+                <i class="fa-solid fa-stethoscope"></i> Health & Personal Care
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+            <li data-category="Baby Products">
+                <i class="fa-solid fa-baby-carriage"></i> Baby Products
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+            <li data-category="Home & Kitchen">
+                <i class="fa-solid fa-kitchen-set"></i> Home & Kitchen
+                <i class="fa-solid fa-plus menu-plus"></i>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Category Menu Toggle (Hamburger) -->
+            <button class="mobile-menu-btn" id="menuDrawerBtn" style="display: block; margin-right: 1rem;">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="logo">
+                <i class="fa-solid fa-bag-shopping"></i> SmartBuyHub
+            </div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search for products, deals, or brands...">
+                <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+            <div class="header-actions">
+                <div class="profit-rate">
+                    <i class="fa-solid fa-coins"></i> Profit Rates
+                </div>
+                <a href="profile.html" class="user-profile" style="color: white; text-decoration: none;">
+                    <i class="fa-solid fa-user"></i> My Profile
+                </a>
+            </div>
+            <!-- Removed duplicate mobile menu toggle here since we moved it left -->
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-layout">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar" id="sidebar">
+            <div class="filter-header">
+                <h3>FILTER BY</h3>
+                <button id="clearFilters">Clear All</button>
+            </div>
+
+            <div class="filter-group">
+                <h4><i class="fa-solid fa-tag"></i> Categories</h4>
+                <ul class="filter-list" id="categoryFilters">
+                    <li><label><input type="checkbox" value="Electronics"> Electronics</label></li>
+                    <li><label><input type="checkbox" value="Fashion"> Fashion</label></li>
+                    <li><label><input type="checkbox" value="Beauty"> Beauty</label></li>
+                    <li><label><input type="checkbox" value="Home"> Home & Kitchen</label></li>
+                </ul>
+            </div>
+
+            <div class="filter-group">
+                <h4><i class="fa-solid fa-store"></i> Retailer</h4>
+                <ul class="filter-list" id="retailerFilters">
+                    <li><label><input type="checkbox" value="Amazon"> Amazon</label></li>
+                    <li><label><input type="checkbox" value="Flipkart"> Flipkart</label></li>
+                    <li><label><input type="checkbox" value="Myntra"> Myntra</label></li>
+                    <li><label><input type="checkbox" value="Ajio"> Ajio</label></li>
+                </ul>
+            </div>
+
+            <div class="filter-group">
+                <h4><i class="fa-solid fa-indian-rupee-sign"></i> Price Range</h4>
+                <div class="price-inputs">
+                    <input type="number" id="minPrice" placeholder="Min">
+                    <span>-</span>
+                    <input type="number" id="maxPrice" placeholder="Max">
+                    <button id="applyPriceBtn">GO</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Product Grid Section -->
+        <section class="content-area">
+            <div class="page-title">
+                <h1>TODAY'S BEST DEALS</h1>
+                <p id="dealCount">Choose from top deals</p>
+            </div>
+
+            <div class="sort-tabs">
+                <button class="sort-tab active" data-sort="popularity">Popularity</button>
+                <button class="sort-tab" data-sort="discount">High Discount</button>
+                <button class="sort-tab" data-sort="price-low">Low Price</button>
+                <button class="sort-tab" data-sort="price-high">High Price</button>
+            </div>
+
+            <div class="product-grid" id="productGrid">
+                <!-- Product cards will be injected here by JS -->
+            </div>
+            
+            <!-- Toast Notification -->
+            <div id="toast" class="toast">Link copied to clipboard!</div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 SmartBuyHub. All rights reserved.</p>
+        <p>Earn commission by sharing your favorite products.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

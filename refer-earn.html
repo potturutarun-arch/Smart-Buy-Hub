@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refer & Earn - SmartBuyHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e6c46;
+            --primary-light: #469b61;
+            --primary-gradient: linear-gradient(135deg, #1e6c46 0%, #469b61 100%);
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --accent-emerald: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Navbar */
+        .navbar { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; }
+        .nav-right a { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+
+        /* Header Gradient Banner */
+        .header-banner {
+            background: var(--primary-gradient);
+            padding: 1.5rem 2rem 5rem 2rem;
+            color: white;
+        }
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .breadcrumbs {
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+        .breadcrumbs span {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Container */
+        .main-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: -4rem auto 4rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Widgets Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            border: 1px solid var(--border-color);
+        }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.25rem;
+            background: #ecfdf5;
+            color: var(--accent-emerald);
+        }
+        .stat-details { display: flex; flex-direction: column; }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; }
+
+        /* Main panels split */
+        .split-layout {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .glass-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        /* Referral details styling */
+        .referral-box {
+            background: #f9fafb;
+            border: 1px dashed var(--primary-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .referral-lbl {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .referral-code {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+        .referral-link {
+            font-size: 0.85rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+        .btn-copy {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.65rem 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .btn-copy:hover { background: #175436; }
+
+        /* Program details list */
+        .program-card {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 1.5rem;
+            color: #1e3a8a;
+        }
+        .program-title {
+            color: #1e3a8a;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        .program-list {
+            list-style: none;
+        }
+        .program-list li {
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .program-list li i {
+            margin-top: 0.25rem;
+            color: #3b82f6;
+        }
+
+        /* Referred user list */
+        .network-card {
+            margin-top: 1.5rem;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th {
+            padding: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.92rem;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1e293b;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Dark Premium Footer */
+        .footer-wrap {
+            background: #222222;
+            color: #9ca3af;
+            padding: 3rem 2rem 2rem 2rem;
+            margin-top: auto;
+            border-top: 4px solid var(--primary);
+        }
+        .footer-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
+        }
+        .footer-col h4 {
+            color: #4ade80;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.75rem; }
+        .footer-col ul li a { color: #9ca3af; text-decoration: none; font-size: 0.88rem; }
+        .footer-col ul li a:hover { color: white; }
+        .playstore-btn {
+            background: #000000; border: 1px solid #374151; border-radius: 8px; padding: 0.5rem 1rem;
+            display: inline-flex; align-items: center; gap: 0.75rem; color: white; text-decoration: none; width: fit-content;
+        }
+        .playstore-btn i { font-size: 1.75rem; color: #3b82f6; }
+        .btn-text { display: flex; flex-direction: column; line-height: 1.2; }
+        .text-top { font-size: 0.65rem; text-transform: uppercase; color: #9ca3af; }
+        .text-bottom { font-size: 0.95rem; font-weight: 700; }
+        .footer-bottom {
+            max-width: 1000px; margin: 2.5rem auto 0 auto; padding-top: 1.5rem; border-top: 1px solid #374151;
+            text-align: center; font-size: 0.8rem; color: #6b7280;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-bag-shopping"></i> SmartBuyHub
+        </a>
+        <div class="nav-right">
+            <a href="profile.html"><i class="fa-solid fa-user"></i> <span id="navProfileName">My Profile</span></a>
+        </div>
+    </nav>
+
+    <!-- Header Gradient Banner -->
+    <div class="header-banner">
+        <div class="header-content">
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <a href="earnings.html">My Earnings</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                <span>Refer & Earn</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Summary Stats grid -->
+        <div class="stats-grid">
+            <!-- Referrals count -->
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div class="stat-details">
+                    <span class="stat-label">Total Referred Friends</span>
+                    <span class="stat-value" id="valReferralsCount">0</span>
+                </div>
+            </div>
+
+            <!-- Commission amount -->
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #eff6ff; color: #3b82f6;">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <div class="stat-details">
+                    <span class="stat-label">Lifetime Referral Commission</span>
+                    <span class="stat-value">₹<span id="valCommission">0.00</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Split block: Link generation on left, Guidelines on right -->
+        <div class="split-layout">
+            <!-- Left Card -->
+            <div class="glass-card">
+                <h3 class="card-title"><i class="fa-solid fa-share-nodes" style="color: var(--primary);"></i> Share Referral Code</h3>
+                
+                <div class="referral-box">
+                    <div class="referral-lbl">YOUR EXCLUSIVE REFERRAL CODE</div>
+                    <div class="referral-code" id="refCodeDisplay">SBH53013</div>
+                    
+                    <div class="referral-lbl" style="margin-top: 1rem;">YOUR EXCLUSIVE SIGNUP LINK</div>
+                    <div class="referral-link" id="refLinkDisplay">http://localhost:3000/signup.html?ref=SBH53013</div>
+
+                    <button class="btn-copy" id="copyRefBtn">
+                        <i class="fa-regular fa-copy"></i> Copy Referral Link
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Card -->
+            <div class="program-card">
+                <h4 class="program-title"><i class="fa-solid fa-circle-check"></i> Lifetime Commission Program</h4>
+                <ul class="program-list">
+                    <li>
+                        <i class="fa-solid fa-square-check"></i>
+                        <span>Invite your friends to register on SmartBuyHub using your link or code.</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-square-check"></i>
+                        <span>When your referred friend shops and earns affiliate commission, you get **10%**!</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-square-check"></i>
+                        <span>This referral commission is lifetime! The more active friends you refer, the higher you earn passively.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Network Table -->
+        <div class="glass-card network-card">
+            <h3 class="card-title"><i class="fa-solid fa-people-group" style="color: var(--primary);"></i> My Referral Network</h3>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Friend Name</th>
+                            <th>Date Joined</th>
+                            <th>Status</th>
+                            <th>Your Commission Earned</th>
+                        </tr>
+                    </thead>
+                    <tbody id="referralNetworkBody">
+                        <!-- Filled by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Referral link copied to clipboard!</div>
+
+    <!-- Footer -->
+    <footer class="footer-wrap">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>About SmartBuyHub</h4>
+                <ul>
+                    <li><a href="help.html#about">About Us</a></li>
+                    <li><a href="help.html#blog">Blog</a></li>
+                    <li><a href="help.html">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Useful Reads</h4>
+                <ul>
+                    <li><a href="help.html#terms">Terms and Conditions</a></li>
+                    <li><a href="help.html#privacy">Privacy & Cookie Policy</a></li>
+                    <li><a href="help.html#anti-spam">Anti-Spam Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect With Us</h4>
+                <ul>
+                    <li><a href="help.html">Get Help</a></li>
+                    <li><a href="https://t.me/smartbuyhub" target="_blank">Telegram</a></li>
+                    <li><a href="https://youtube.com/smartbuyhub" target="_blank">YouTube</a></li>
+                    <li><a href="https://instagram.com/smartbuyhub" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Download App</h4>
+                <a href="https://play.google.com/store" target="_blank" class="playstore-btn">
+                    <i class="fa-brands fa-google-play"></i>
+                    <div class="btn-text">
+                        <span class="text-top">Get it on</span>
+                        <span class="text-bottom">Google Play</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 SmartBuyHub. All rights reserved. Built with premium design.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+
+            if (!token || !userId) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const formatCurrency = (val) => {
+                return new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR'
+                }).format(val);
+            };
+
+            // Set exclusive code and links based on User ID
+            const refCode = `SBH${userId}`;
+            const refLink = `http://localhost:3000/signup.html?ref=${refCode}`;
+            
+            document.getElementById('refCodeDisplay').textContent = refCode;
+            document.getElementById('refLinkDisplay').textContent = refLink;
+
+            const toast = document.getElementById('toast');
+            let toastTimeout;
+            
+            // Clipboard Copy trigger
+            document.getElementById('copyRefBtn').addEventListener('click', () => {
+                navigator.clipboard.writeText(refLink).then(() => {
+                    toast.classList.add('show');
+                    clearTimeout(toastTimeout);
+                    toastTimeout = setTimeout(() => {
+                        toast.classList.remove('show');
+                    }, 2500);
+                });
+            });
+
+            // Fetch live profile details for navbar name
+            try {
+                const pRes = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                if (pRes.ok) {
+                    const userData = await pRes.json();
+                    document.getElementById('navProfileName').textContent = userData.name;
+                }
+            } catch(e) { console.error(e); }
+
+            // Fetch referral network information
+            try {
+                const res = await fetch(`http://localhost:3000/api/user/referrals?userId=${userId}`);
+                if (res.ok) {
+                    const refs = await res.json();
+                    
+                    // Summarize referrals
+                    document.getElementById('valReferralsCount').textContent = refs.length;
+                    
+                    const commissionSum = refs.reduce((sum, r) => sum + r.earningsContribution, 0);
+                    document.getElementById('valCommission').textContent = commissionSum.toFixed(2);
+
+                    const tbody = document.getElementById('referralNetworkBody');
+                    tbody.innerHTML = '';
+
+                    if (refs.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 3rem;">
+                                    <i class="fa-solid fa-users-slash" style="font-size: 2rem; margin-bottom: 0.5rem; display: block; opacity: 0.3;"></i>
+                                    You have not referred any friends yet. Share your code to start earning!
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    refs.forEach(r => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td style="font-weight: 600; color: var(--text-dark);">${r.name}</td>
+                            <td>${r.dateJoined}</td>
+                            <td><span style="background: #e6fcf5; color: #0ca678; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600;"><i class="fa-solid fa-check"></i> Active</span></td>
+                            <td style="font-weight: 700; color: var(--accent-emerald);">${formatCurrency(r.earningsContribution)}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } catch(e) { console.error(e); }
+        });
+    </script>
+</body>
+</html>

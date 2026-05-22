@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - SmartBuyHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e6c46; /* Deep green */
+            --primary-light: #469b61; /* Lighter green for header boxes */
+            --bg-color: #f3f4f6; /* Light gray background */
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --icon-color: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); }
+
+        /* Navbar */
+        .navbar { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; }
+        .nav-right { display: flex; gap: 1.5rem; align-items: center; font-weight: 500; }
+        .nav-right a { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-right a:hover { opacity: 0.8; }
+
+        /* Profile Header */
+        .profile-header-wrap { background: var(--primary); padding-bottom: 2rem; border-radius: 0 0 1rem 1rem; margin-bottom: -1rem; }
+        .profile-header { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
+        .user-info-left { display: flex; align-items: center; gap: 1rem; }
+        .user-avatar { width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .user-name { font-size: 1.25rem; font-weight: 600; color: white; }
+        
+        .user-stats-right { display: flex; gap: 1rem; }
+        .stat-box { background: rgba(255, 255, 255, 0.2); padding: 0.75rem 1.5rem; border-radius: 8px; text-align: center; color: white; border: 1px solid rgba(255,255,255,0.3); }
+        .stat-label { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.25rem; }
+        .stat-value { font-size: 1.2rem; font-weight: 700; }
+
+        /* Main Dashboard Grid */
+        .dashboard-container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+
+        .dashboard-card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid var(--border-color); }
+        .card-title { padding: 1.25rem 1.5rem; font-size: 1.1rem; font-weight: 600; border-bottom: 1px solid var(--border-color); }
+        
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); text-decoration: none; color: var(--text-dark); transition: background 0.2s; }
+        .list-item:hover { background: #f9fafb; }
+        .list-item:last-child { border-bottom: none; }
+        
+        .item-left { display: flex; align-items: center; gap: 1rem; font-weight: 500; }
+        .item-icon { width: 32px; height: 32px; border-radius: 50%; background: #ecfdf5; color: var(--icon-color); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; border: 1px solid #d1fae5; }
+        .item-arrow { color: var(--primary); font-size: 0.9rem; }
+        
+        .logout-btn { display: block; width: fit-content; margin: 2rem auto; padding: 0.75rem 2rem; background: #ef4444; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; }
+
+        @media(max-width: 768px) {
+            .profile-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+            .user-stats-right { width: 100%; justify-content: space-between; }
+            .stat-box { flex: 1; }
+            .nav-right span { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-bag-shopping"></i> SmartBuyHub
+        </a>
+        <div class="nav-right">
+            <a href="index.html"><i class="fa-solid fa-coins"></i> <span>Profit Rates</span></a>
+            <a href="make-links.html"><i class="fa-solid fa-link"></i> <span>Make Links</span></a>
+        </div>
+    </nav>
+
+    <div class="profile-header-wrap">
+        <div class="profile-header">
+            <div class="user-info-left">
+                <div class="user-avatar" id="userInitial">U</div>
+                <div class="user-name" id="userName">Loading...</div>
+            </div>
+            <div class="user-stats-right">
+                <div class="stat-box">
+                    <div class="stat-label">User ID</div>
+                    <div class="stat-value" id="userIdBox">...</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Total Profit</div>
+                    <div class="stat-value">₹<span id="userProfit">0</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- Money Card -->
+        <div class="dashboard-card">
+            <div class="card-title">Money</div>
+            <a href="earnings.html" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div> My Earnings</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+            <a href="payout-history.html" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-solid fa-clock-rotate-left"></i></div> Payout History</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+        </div>
+
+        <!-- Reports Card -->
+        <div class="dashboard-card">
+            <div class="card-title">Reports</div>
+            <a href="reports.html" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-solid fa-chart-line"></i></div> Reports</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+            <a href="reports.html?retailer=Flipkart" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-solid fa-file-invoice"></i></div> Flipkart Reports</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+            <a href="reports.html#links" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-solid fa-link"></i></div> My Link Performance</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+        </div>
+
+        <!-- Exclusive Tools -->
+        <div class="dashboard-card">
+            <div class="card-title">Exclusive Tools</div>
+            <a href="index.html" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-solid fa-arrow-trend-up"></i></div> Profit Share</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+            <a href="refer-earn.html" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-solid fa-users"></i></div> Affiliaters</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+        </div>
+
+        <!-- Exclusive Deals -->
+        <div class="dashboard-card">
+            <div class="card-title">Exclusive Deals</div>
+            <a href="https://t.me/smartbuyhub" target="_blank" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-brands fa-telegram"></i></div> Join Our Telegram</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+        </div>
+        
+        <!-- Academy -->
+        <div class="dashboard-card">
+            <div class="card-title">SmartBuyHub Academy</div>
+            <a href="help.html#how-it-works" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-solid fa-circle-question"></i></div> How It Works?</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+        </div>
+
+        <!-- Earn Extra -->
+        <div class="dashboard-card">
+            <div class="card-title">Earn Extra Profit</div>
+            <a href="refer-earn.html" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-solid fa-user-plus"></i></div> Refer & Earn</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+        </div>
+
+        <!-- Settings & Security -->
+        <div class="dashboard-card">
+            <div class="card-title">Settings & Security</div>
+            <a href="account-settings.html" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-solid fa-gears"></i></div> Account Settings</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+            <a href="change-password.html" class="list-item">
+                <div class="item-left"><div class="item-icon"><i class="fa-solid fa-key"></i></div> Change Password</div>
+                <i class="fa-solid fa-chevron-right item-arrow"></i>
+            </a>
+        </div>
+    </div>
+
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+
+            if (!token || !userId) {
+                // Not logged in, redirect to login
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Fetch User Profile from Backend
+                const res = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                if (res.ok) {
+                    const userData = await res.json();
+                    
+                    // Update UI
+                    document.getElementById('userName').textContent = userData.name;
+                    document.getElementById('userIdBox').textContent = userData.id;
+                    document.getElementById('userProfit').textContent = userData.totalProfit;
+                    
+                    // First letter of name for avatar
+                    document.getElementById('userInitial').textContent = userData.name.charAt(0).toUpperCase();
+                } else {
+                    // Invalid session
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                }
+            } catch (err) {
+                console.error("Failed to load profile", err);
+                document.getElementById('userName').textContent = 'Backend Offline';
+            }
+
+            // Logout Logic
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                localStorage.clear();
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>
