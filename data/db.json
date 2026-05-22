@@ -417,6 +417,15 @@
       "retailer": "Flipkart",
       "clicks": 6,
       "earnings": 403.71
+    },
+    {
+      "id": "CLK87020",
+      "userId": "5301358",
+      "url": "https://www.amazon.in/dp/B0BYTEST",
+      "title": "Adapter Test Smart Link",
+      "retailer": "Amazon",
+      "clicks": 1,
+      "earnings": 0
     }
   ],
   "referrals": [
