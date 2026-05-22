@@ -555,7 +555,7 @@
             // Fetch live profile details for navbar & balance banner
             const fetchUserProfile = async () => {
                 try {
-                    const pRes = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                    const pRes = await fetch(`/api/user/profile?userId=${userId}`);
                     if (pRes.ok) {
                         const userData = await pRes.json();
                         document.getElementById('navProfileName').textContent = userData.name;
@@ -569,7 +569,7 @@
             // Fetch payout transaction history
             const fetchPaymentHistory = async () => {
                 try {
-                    const res = await fetch(`http://localhost:3000/api/user/payments?userId=${userId}`);
+                    const res = await fetch(`/api/user/payments?userId=${userId}`);
                     if (res.ok) {
                         const txns = await res.json();
                         const tbody = document.getElementById('paymentHistoryBody');
@@ -669,7 +669,7 @@
 
                 // Send request to API
                 try {
-                    const res = await fetch('http://localhost:3000/api/user/request-payment', {
+                    const res = await fetch('/api/user/request-payment', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

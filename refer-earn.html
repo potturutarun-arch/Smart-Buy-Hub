@@ -366,7 +366,7 @@
                     <div class="referral-code" id="refCodeDisplay">SBH53013</div>
                     
                     <div class="referral-lbl" style="margin-top: 1rem;">YOUR EXCLUSIVE SIGNUP LINK</div>
-                    <div class="referral-link" id="refLinkDisplay">http://localhost:3000/signup.html?ref=SBH53013</div>
+                    <div class="referral-link" id="refLinkDisplay">${window.location.origin}/signup.html?ref=SBH53013</div>
 
                     <button class="btn-copy" id="copyRefBtn">
                         <i class="fa-regular fa-copy"></i> Copy Referral Link
@@ -482,7 +482,7 @@
 
             // Set exclusive code and links based on User ID
             const refCode = `SBH${userId}`;
-            const refLink = `http://localhost:3000/signup.html?ref=${refCode}`;
+            const refLink = `${window.location.origin}/signup.html?ref=${refCode}`;
             
             document.getElementById('refCodeDisplay').textContent = refCode;
             document.getElementById('refLinkDisplay').textContent = refLink;
@@ -503,7 +503,7 @@
 
             // Fetch live profile details for navbar name
             try {
-                const pRes = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                const pRes = await fetch(`/api/user/profile?userId=${userId}`);
                 if (pRes.ok) {
                     const userData = await pRes.json();
                     document.getElementById('navProfileName').textContent = userData.name;
@@ -512,7 +512,7 @@
 
             // Fetch referral network information
             try {
-                const res = await fetch(`http://localhost:3000/api/user/referrals?userId=${userId}`);
+                const res = await fetch(`/api/user/referrals?userId=${userId}`);
                 if (res.ok) {
                     const refs = await res.json();
                     

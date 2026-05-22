@@ -487,7 +487,7 @@
 
             // Fetch live profile details for navbar name
             try {
-                const pRes = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                const pRes = await fetch(`/api/user/profile?userId=${userId}`);
                 if (pRes.ok) {
                     const userData = await pRes.json();
                     document.getElementById('navProfileName').textContent = userData.name;
@@ -524,7 +524,7 @@
                 }
 
                 try {
-                    const res = await fetch('http://localhost:3000/api/user/create-link', {
+                    const res = await fetch('/api/user/create-link', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ userId, url, title, retailer })

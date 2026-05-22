@@ -232,7 +232,7 @@ drawerMenuItems.forEach(item => {
 // Initial Render & Data Fetching
 const initializeApp = async () => {
     try {
-        const res = await fetch('http://localhost:3000/api/products');
+        const res = await fetch('/api/products');
         if (res.ok) {
             products = await res.json();
             currentProducts = [...products];

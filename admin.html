@@ -441,7 +441,7 @@
             async function loadAdminDeck() {
                 try {
                     // 1. Fetch Owner Private Commission stats
-                    const statsRes = await fetch('http://localhost:3000/api/admin/stats');
+                    const statsRes = await fetch('/api/admin/stats');
                     if (statsRes.ok) {
                         const stats = await statsRes.json();
                         document.getElementById('statOwnerComm').textContent = stats.ownerCommission.toFixed(2);
@@ -450,7 +450,7 @@
                     }
 
                     // 2. Fetch Users Directory
-                    const usersRes = await fetch('http://localhost:3000/api/admin/users');
+                    const usersRes = await fetch('/api/admin/users');
                     if (usersRes.ok) {
                         const users = await usersRes.json();
                         const tbody = document.getElementById('userTableBody');
@@ -490,7 +490,7 @@
                     // for the active users or add a simple endpoint GET /api/admin/payments to return all payouts. That is super clean.
                     // Wait, let's look at how server.js serves payments. It does app.get('/api/user/payments', ...) which filters by userId.
                     // Let's add GET /api/admin/payments which returns ALL payments in server.js. Let's make sure it is added.
-                    const payRes = await fetch('http://localhost:3000/api/admin/payments');
+                    const payRes = await fetch('/api/admin/payments');
                     if (payRes.ok) {
                         const payments = await payRes.json();
                         const list = document.getElementById('payoutList');
@@ -559,7 +559,7 @@
                 const details = document.getElementById('payoutDetails').value;
 
                 try {
-                    const res = await fetch('http://localhost:3000/api/admin/process-payout', {
+                    const res = await fetch('/api/admin/process-payout', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ userId, amount, method, details })

@@ -610,7 +610,7 @@
 
             // Fetch live profile details for navbar name
             try {
-                const pRes = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                const pRes = await fetch(`/api/user/profile?userId=${userId}`);
                 if (pRes.ok) {
                     const userData = await pRes.json();
                     document.getElementById('navProfileName').textContent = userData.name;
@@ -628,7 +628,7 @@
 
             async function loadFinancialBreakdown() {
                 try {
-                    const res = await fetch(`http://localhost:3000/api/user/financial-breakdown?userId=${userId}`);
+                    const res = await fetch(`/api/user/financial-breakdown?userId=${userId}`);
                     if (res.ok) {
                         financialData = await res.json();
                         
@@ -646,13 +646,13 @@
             async function loadPerformanceReports() {
                 try {
                     // Fetch click logs
-                    const clickRes = await fetch(`http://localhost:3000/api/user/reports?userId=${userId}`);
+                    const clickRes = await fetch(`/api/user/reports?userId=${userId}`);
                     if (clickRes.ok) {
                         globalClickStats = await clickRes.json();
                     }
 
                     // Fetch order logs for transactions
-                    const orderRes = await fetch(`http://localhost:3000/api/user/orders?userId=${userId}`);
+                    const orderRes = await fetch(`/api/user/orders?userId=${userId}`);
                     if (orderRes.ok) {
                         globalOrders = await orderRes.json();
                     }

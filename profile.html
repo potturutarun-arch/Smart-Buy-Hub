@@ -196,7 +196,7 @@
 
             try {
                 // Fetch User Profile from Backend
-                const res = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                const res = await fetch(`/api/user/profile?userId=${userId}`);
                 if (res.ok) {
                     const userData = await res.json();
                     

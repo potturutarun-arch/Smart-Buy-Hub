@@ -6,7 +6,7 @@
       "phone": "9876543210",
       "password": "password123",
       "name": "Tarun Potturu Verified",
-      "totalProfit": 632.25
+      "totalProfit": 1035.96
     },
     {
       "id": "7935240",
@@ -289,6 +289,15 @@
   ],
   "orders": [
     {
+      "id": "ORD24739",
+      "userId": "5301358",
+      "retailer": "Flipkart",
+      "date": "2026-05-22",
+      "amount": 5162,
+      "profit": 403.71,
+      "status": "Confirmed"
+    },
+    {
       "id": "ORD59315",
       "userId": "5301358",
       "retailer": "Flipkart",
@@ -326,6 +335,15 @@
     }
   ],
   "payments": [
+    {
+      "id": "TXN40281",
+      "userId": "5301358",
+      "amount": 403.71,
+      "date": "2026-05-22",
+      "method": "Affiliate Commission (Flipkart)",
+      "status": "Transferred",
+      "utr": "CTR839968003115"
+    },
     {
       "id": "TXN72680",
       "userId": "5301358",
@@ -390,6 +408,15 @@
       "retailer": "Flipkart",
       "clicks": 2,
       "earnings": 602.25
+    },
+    {
+      "id": "CLK52037",
+      "userId": "5301358",
+      "url": "https://www.flipkart.com/televisions/pr?sid=ckf,czl",
+      "title": "Samsung Smart TV Test Link",
+      "retailer": "Flipkart",
+      "clicks": 6,
+      "earnings": 403.71
     }
   ],
   "referrals": [

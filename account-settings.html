@@ -342,7 +342,7 @@
 
             // 1. Fetch current profile data
             try {
-                const res = await fetch(`http://localhost:3000/api/user/profile?userId=${userId}`);
+                const res = await fetch(`/api/user/profile?userId=${userId}`);
                 if (res.ok) {
                     const userData = await res.json();
                     
@@ -382,7 +382,7 @@
                 }
 
                 try {
-                    const res = await fetch('http://localhost:3000/api/user/update-profile', {
+                    const res = await fetch('/api/user/update-profile', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ userId, name, email, phone })
