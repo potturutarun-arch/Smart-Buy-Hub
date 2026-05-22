@@ -35,6 +35,246 @@
         .footer-link a:hover { text-decoration: underline; }
 
         @media(max-width: 768px) { .login-container { flex-direction: column; } .login-branding { padding: 2rem; } .login-form-area { padding: 2rem; } }
+
+        /* OTP Modal Overlay Styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .otp-modal {
+            background: white;
+            border-radius: 24px;
+            padding: 2.5rem;
+            max-width: 460px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            transform: scale(0.9);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-overlay.active .otp-modal {
+            transform: scale(1);
+        }
+        .otp-icon {
+            width: 64px;
+            height: 64px;
+            background: #f0fdf4;
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1.25rem auto;
+            border: 1px solid #dcfce7;
+        }
+        .otp-modal h3 {
+            font-size: 1.4rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        .otp-modal p.otp-sub {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        .otp-group {
+            margin-bottom: 1.25rem;
+            text-align: left;
+        }
+        .otp-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.88rem;
+        }
+        .otp-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            text-align: center;
+            outline: none;
+            transition: var(--transition);
+        }
+        .otp-group input::placeholder {
+            letter-spacing: normal;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+        .otp-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+        }
+        .otp-timer {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        .otp-timer span {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        .otp-resend {
+            font-size: 0.88rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            pointer-events: none;
+            opacity: 0.5;
+            transition: var(--transition);
+        }
+        .otp-resend.active {
+            pointer-events: auto;
+            opacity: 1;
+        }
+        .otp-resend.active:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+        .btn-verify {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-verify:hover {
+            background: var(--primary-hover);
+        }
+        .btn-verify:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .otp-error-msg {
+            color: #ef4444;
+            font-size: 0.88rem;
+            padding: 0.75rem;
+            background: #fef2f2;
+            border: 1px dashed #ef4444;
+            border-radius: 6px;
+            margin-bottom: 1.25rem;
+            display: none;
+            font-weight: 500;
+        }
+
+        /* Sandbox Notification Center Styling */
+        .sandbox-notify-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 400px;
+            width: 90%;
+            pointer-events: none;
+        }
+        .sandbox-notify {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 1.25rem;
+            box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(15, 23, 42, 0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transform: translateX(120%);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: auto;
+        }
+        .sandbox-notify.show {
+            transform: translateX(0);
+        }
+        .sandbox-notify-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .sandbox-notify-icon.mail {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        }
+        .sandbox-notify-icon.sms {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .sandbox-notify-body {
+            flex-grow: 1;
+        }
+        .sandbox-notify-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .sandbox-notify-app {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .sandbox-notify-time {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+        .sandbox-notify-msg {
+            font-size: 0.88rem;
+            color: var(--text-main);
+            line-height: 1.4;
+            font-weight: 500;
+        }
+        .sandbox-notify-otp-badge {
+            display: inline-block;
+            background: rgba(15, 118, 110, 0.1);
+            color: var(--primary-color);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 0.95rem;
+            margin-left: 4px;
+            letter-spacing: 1px;
+            border: 1px dashed rgba(15, 118, 110, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -82,7 +322,166 @@
         </div>
     </div>
 
+    <!-- OTP Verification Modal Overlay -->
+    <div class="modal-overlay" id="otpModalOverlay">
+        <div class="otp-modal">
+            <div class="otp-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3>Verify Your Identity</h3>
+            <p class="otp-sub">We have sent security verification codes to your email and phone number. Enter them below to finish account creation.</p>
+            
+            <div class="otp-error-msg" id="otpError">Incorrect code. Please try again.</div>
+            
+            <form id="otpForm">
+                <div class="otp-group">
+                    <label>6-Digit Email Verification Code</label>
+                    <input type="text" id="emailOtp" placeholder="0 0 0 0 0 0" required maxlength="6" pattern="[0-9]{6}">
+                </div>
+                <div class="otp-group">
+                    <label>6-Digit SMS Verification Code</label>
+                    <input type="text" id="smsOtp" placeholder="0 0 0 0 0 0" required maxlength="6" pattern="[0-9]{6}">
+                </div>
+                
+                <div class="otp-timer">
+                    Resend codes in <span id="timerCountdown">59</span> seconds
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <span class="otp-resend" id="resendOtpBtn">Resend OTP Codes</span>
+                </div>
+                
+                <button type="submit" class="btn-verify" id="verifyOtpBtn">Verify and Create Account</button>
+            </form>
+        </div>
+    </div>
+
     <script>
+        let globalSignupData = null;
+        let timerInterval = null;
+
+        // CORS/Local-file protocol fallback resolver
+        function getApiUrl(path) {
+            const origin = window.location.origin;
+            if (origin.startsWith('file://')) {
+                return `http://localhost:3000${path}`;
+            }
+            return path;
+        }
+
+        // Custom Floating OS Notification Simulator
+        function showSandboxNotification(app, type, message, otp) {
+            const container = document.getElementById('sandboxNotifyContainer') || (() => {
+                const c = document.createElement('div');
+                c.className = 'sandbox-notify-container';
+                c.id = 'sandboxNotifyContainer';
+                document.body.appendChild(c);
+                return c;
+            })();
+
+            const toast = document.createElement('div');
+            toast.className = 'sandbox-notify';
+            
+            const isMail = type === 'mail';
+            const iconClass = isMail ? 'fa-solid fa-envelope' : 'fa-solid fa-message';
+            const iconBg = isMail ? 'mail' : 'sms';
+            
+            toast.innerHTML = `
+                <div class="sandbox-notify-icon ${iconBg}">
+                    <i class="${iconClass}"></i>
+                </div>
+                <div class="sandbox-notify-body">
+                    <div class="sandbox-notify-header">
+                        <span class="sandbox-notify-app">${app}</span>
+                        <span class="sandbox-notify-time">just now</span>
+                    </div>
+                    <div class="sandbox-notify-msg">
+                        ${message} <span class="sandbox-notify-otp-badge">${otp}</span>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Force browser reflow to trigger transition
+            toast.offsetHeight;
+            
+            toast.classList.add('show');
+            
+            // Auto dismiss after 12 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 500);
+            }, 12000);
+        }
+
+        function startOtpTimer() {
+            let countdown = 59;
+            const timerSpan = document.getElementById('timerCountdown');
+            const resendBtn = document.getElementById('resendOtpBtn');
+            
+            timerSpan.parentElement.style.display = 'block';
+            resendBtn.classList.remove('active');
+            
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                countdown--;
+                timerSpan.textContent = countdown;
+                if (countdown <= 0) {
+                    clearInterval(timerInterval);
+                    timerSpan.parentElement.style.display = 'none';
+                    resendBtn.classList.add('active');
+                }
+            }, 1000);
+        }
+
+        function openOtpModal(email, phone) {
+            document.getElementById('otpModalOverlay').classList.add('active');
+            startOtpTimer();
+            // Clear prior values
+            document.getElementById('emailOtp').value = '';
+            document.getElementById('smsOtp').value = '';
+            document.getElementById('otpError').style.display = 'none';
+        }
+
+        function closeOtpModal() {
+            document.getElementById('otpModalOverlay').classList.remove('active');
+            clearInterval(timerInterval);
+        }
+
+        // Resend OTP action
+        document.getElementById('resendOtpBtn').addEventListener('click', async () => {
+            if (!globalSignupData) return;
+            
+            const resendBtn = document.getElementById('resendOtpBtn');
+            resendBtn.classList.remove('active');
+            
+            try {
+                const res = await fetch(getApiUrl('/api/otp/send'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: globalSignupData.email, phone: globalSignupData.phone })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    // Trigger stunning simulated in-app push notifications
+                    showSandboxNotification('Mail App', 'mail', 'SmartBuyHub: Resent Email OTP is', data.emailOtp);
+                    if (data.smsOtp) {
+                        showSandboxNotification('Messages App', 'sms', 'SmartBuyHub code:', data.smsOtp);
+                    }
+                    startOtpTimer();
+                } else {
+                    resendBtn.classList.add('active');
+                }
+            } catch(e) {
+                console.error(e);
+                resendBtn.classList.add('active');
+            }
+        });
+
+        // Signup form submission
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('name').value;
@@ -100,25 +499,33 @@
                 return;
             }
 
-            btn.textContent = 'Creating account...';
+            btn.textContent = 'Sending OTP...';
             btn.disabled = true;
             errorMsg.style.display = 'none';
 
+            globalSignupData = { name, email, phone, password };
+
             try {
-                const res = await fetch('/api/signup', {
+                // Send simulated OTP first
+                const res = await fetch(getApiUrl('/api/otp/send'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, phone, password })
+                    body: JSON.stringify({ email, phone })
                 });
                 const data = await res.json();
 
                 if (data.success) {
-                    // Auto login and save token
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('userId', data.userId);
-                    window.location.href = 'profile.html';
+                    // Trigger stunning simulated in-app push notifications
+                    showSandboxNotification('Mail App', 'mail', 'SmartBuyHub: Confirm signup using verification code', data.emailOtp);
+                    if (data.smsOtp) {
+                        showSandboxNotification('Messages App', 'sms', 'SmartBuyHub security verification OTP:', data.smsOtp);
+                    }
+                    
+                    openOtpModal(email, phone);
+                    btn.textContent = 'Sign Up';
+                    btn.disabled = false;
                 } else {
-                    errorMsg.textContent = data.error || 'Failed to create account.';
+                    errorMsg.textContent = data.error || 'Failed to send verification codes.';
                     errorMsg.style.display = 'block';
                     btn.textContent = 'Sign Up';
                     btn.disabled = false;
@@ -129,6 +536,65 @@
                 errorMsg.style.display = 'block';
                 btn.textContent = 'Sign Up';
                 btn.disabled = false;
+            }
+        });
+
+        // OTP verification form submission
+        document.getElementById('otpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const emailOtp = document.getElementById('emailOtp').value;
+            const smsOtp = document.getElementById('smsOtp').value;
+            const otpError = document.getElementById('otpError');
+            const verifyBtn = document.getElementById('verifyOtpBtn');
+
+            verifyBtn.textContent = 'Verifying...';
+            verifyBtn.disabled = true;
+            otpError.style.display = 'none';
+
+            try {
+                const verifyRes = await fetch(getApiUrl('/api/otp/verify'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: globalSignupData.email, 
+                        emailOtp, 
+                        smsOtp 
+                    })
+                });
+                const verifyData = await verifyRes.json();
+
+                if (verifyData.success) {
+                    verifyBtn.textContent = 'Creating account...';
+                    
+                    // Proceed with actual signup
+                    const signupRes = await fetch(getApiUrl('/api/signup'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(globalSignupData)
+                    });
+                    const signupData = await signupRes.json();
+
+                    if (signupData.success) {
+                        localStorage.setItem('token', signupData.token);
+                        localStorage.setItem('userId', signupData.userId);
+                        window.location.href = 'profile.html';
+                    } else {
+                        closeOtpModal();
+                        document.getElementById('errorMsg').textContent = signupData.error || 'Failed to create account.';
+                        document.getElementById('errorMsg').style.display = 'block';
+                    }
+                } else {
+                    otpError.textContent = verifyData.error || 'Invalid verification codes.';
+                    otpError.style.display = 'block';
+                    verifyBtn.textContent = 'Verify and Create Account';
+                    verifyBtn.disabled = false;
+                }
+            } catch (err) {
+                console.error(err);
+                otpError.textContent = 'Verification server error. Please try again.';
+                otpError.style.display = 'block';
+                verifyBtn.textContent = 'Verify and Create Account';
+                verifyBtn.disabled = false;
             }
         });
     </script>

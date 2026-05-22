@@ -122,6 +122,102 @@ app.post('/api/signup', (req, res) => {
     }
 });
 
+// Active OTP store in memory
+const activeOtps = {};
+
+// 5a. Send OTP (SMS & Mail OTP Simulation)
+app.post('/api/otp/send', (req, res) => {
+    const { email, phone } = req.body;
+    if (!email) return res.status(400).json({ success: false, error: 'Email is required' });
+
+    let userPhone = phone;
+    const isSignup = !!phone;
+
+    if (!isSignup) {
+        try {
+            const db = readDB();
+            const user = db.users.find(u => u.email === email);
+            if (!user) {
+                return res.status(404).json({ success: false, error: 'No account registered with this email address. Please sign up first!' });
+            }
+            userPhone = user.phone;
+        } catch (error) {
+            console.error('Error searching user in db:', error);
+            return res.status(500).json({ success: false, error: 'Server database error' });
+        }
+    }
+
+    // Generate random 6 digit codes
+    const emailOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    const smsOtp = userPhone ? Math.floor(100000 + Math.random() * 900000).toString() : null;
+
+    // Save to memory
+    activeOtps[email] = { emailOtp, smsOtp, expires: Date.now() + 5 * 60 * 1000 };
+
+    // Print highlight in backend console for developer visibility
+    console.log('\n==================================================');
+    console.log(`📧 [EMAIL OTP] Sent to ${email} : ${emailOtp}`);
+    if (userPhone && smsOtp) {
+        console.log(`📲 [SMS OTP] Sent to ${userPhone} : ${smsOtp}`);
+    }
+    console.log('==================================================\n');
+
+    res.json({ 
+        success: true, 
+        message: 'Verification codes successfully generated and sent!',
+        emailOtp,
+        smsOtp,
+        phone: userPhone ? `******${userPhone.slice(-4)}` : null
+    });
+});
+
+// 5b. Verify OTP
+app.post('/api/otp/verify', (req, res) => {
+    const { email, emailOtp, smsOtp } = req.body;
+    if (!email || !emailOtp) {
+        return res.status(400).json({ success: false, error: 'Email and Email OTP are required' });
+    }
+
+    const session = activeOtps[email];
+    if (!session || Date.now() > session.expires) {
+        return res.status(400).json({ success: false, error: 'OTP has expired or does not exist. Please request a new one.' });
+    }
+
+    // Accept static '123456' as developer master-bypass, or exact match
+    const emailMatch = (emailOtp === '123456' || emailOtp === session.emailOtp);
+    const smsMatch = !session.smsOtp || (smsOtp === '123456' || smsOtp === session.smsOtp);
+
+    if (emailMatch && smsMatch) {
+        // Clear OTP after successful verify
+        delete activeOtps[email];
+        res.json({ success: true, message: 'Verification successful!' });
+    } else {
+        res.status(400).json({ success: false, error: 'Incorrect verification codes. Please try again.' });
+    }
+});
+
+// 5c. Reset Password via OTP Verification
+app.post('/api/user/reset-password-otp', (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ success: false, error: 'Email and new password are required' });
+    }
+    try {
+        const db = readDB();
+        const user = db.users.find(u => u.email === email);
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+        user.password = password;
+        writeDB(db);
+        res.json({ success: true, message: 'Password reset successfully!' });
+    } catch(e) {
+        console.error(e);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
+
 // 6. Get User Orders
 app.get('/api/user/orders', (req, res) => {
     const userId = req.query.userId;

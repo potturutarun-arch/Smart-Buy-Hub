@@ -63,6 +63,15 @@
     </div>
 
     <script>
+        // CORS/Local-file protocol fallback resolver
+        function getApiUrl(path) {
+            const origin = window.location.origin;
+            if (origin.startsWith('file://')) {
+                return `http://localhost:3000${path}`;
+            }
+            return path;
+        }
+
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
@@ -74,7 +83,7 @@
             btn.disabled = true;
 
             try {
-                const res = await fetch('/api/login', {
+                const res = await fetch(getApiUrl('/api/login'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })

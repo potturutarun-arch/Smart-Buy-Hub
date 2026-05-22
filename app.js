@@ -229,10 +229,19 @@ drawerMenuItems.forEach(item => {
 });
 // --------------------
 
+// CORS/Local-file protocol fallback resolver
+const getApiUrl = (path) => {
+    const origin = window.location.origin;
+    if (origin.startsWith('file://')) {
+        return `http://localhost:3000${path}`;
+    }
+    return path;
+};
+
 // Initial Render & Data Fetching
 const initializeApp = async () => {
     try {
-        const res = await fetch('/api/products');
+        const res = await fetch(getApiUrl('/api/products'));
         if (res.ok) {
             products = await res.json();
             currentProducts = [...products];
